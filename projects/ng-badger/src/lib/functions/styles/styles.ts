@@ -18,8 +18,6 @@ export interface Styles {
 
   swap(styles: StylesProperty): StylesProperty;
 
-  toggle(styles: StylesProperty): void;
-
   toString(): string;
 }
 

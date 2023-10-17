@@ -1,10 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {hostClasses} from './host-classes'
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {CommonModule} from "@angular/common";
 import {CssClasses} from "./css-classes";
 import {cssClassesFactory} from "./css-classes-factory";
-import {By} from "@angular/platform-browser";
 
 @Component({
   selector: 'test',
@@ -40,7 +38,7 @@ describe('cssClassesFactory()', () => {
     expect(nativeElement.classList.contains('initial')).toBeTrue();
   });
 
-  describe('set', () => {
+  describe('set()', () => {
     it('should set classes to host element', () => {
       component.componentInstance.test.set('badger', 'mushroom');
       expect(nativeElement.classList.contains('badger')).toBeTrue();
@@ -59,7 +57,7 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('add', () => {
+  describe('add()', () => {
     it('should add classes to host element', () => {
       component.componentInstance.test.add('badger');
       expect(nativeElement.classList.contains('badger')).toBeTrue();
@@ -80,14 +78,14 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('get', () => {
+  describe('get()', () => {
     it('should get active class list', () => {
       component.componentInstance.test.add('badger', 'mushroom');
       expect(component.componentInstance.test.get()).toEqual(['initial', 'badger', 'mushroom']);
     });
   });
 
-  describe('contains', () => {
+  describe('contains()', () => {
     it('should return true when class is set', () => {
       component.componentInstance.test.add('badger');
       expect(component.componentInstance.test.contains('badger')).toBeTrue();
@@ -98,7 +96,7 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('remove', () => {
+  describe('remove()', () => {
     it('should remove class', () => {
       component.componentInstance.test.add('badger');
       expect(component.componentInstance.test.contains('badger')).toBeTrue();
@@ -113,7 +111,7 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('removeAll', () => {
+  describe('removeAll()', () => {
     it('should remove all classes', () => {
       component.componentInstance.test.add('badger');
       expect(component.componentInstance.test.contains('badger')).toBeTrue();
@@ -125,7 +123,7 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('swap', () => {
+  describe('swap()', () => {
     it('should swap existing classes', () => {
       component.componentInstance.test.add('badger');
       expect(component.componentInstance.test.contains('badger')).toBeTrue();
@@ -139,7 +137,7 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('toggle', () => {
+  describe('toggle()', () => {
     it('should add class if not set', () => {
       component.componentInstance.test.toggle('badger');
       expect(component.componentInstance.test.contains('badger')).toBeTrue();
@@ -154,7 +152,7 @@ describe('cssClassesFactory()', () => {
     });
   });
 
-  describe('toString', () => {
+  describe('toString()', () => {
     it('should return string', () => {
       component.componentInstance.test.add('badger', 'mushroom');
       expect(component.componentInstance.test.toString()).toEqual('initial badger mushroom');

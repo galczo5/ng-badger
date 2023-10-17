@@ -23,7 +23,7 @@ export class StylesService implements Styles {
   }
 
   contains(property: StylesPropertyName): boolean {
-    return Object.keys(this.styles).includes(property);
+    return Object.keys(this.styles).includes(property) && !!this.styles[property];
   }
 
   get(): StylesProperty {
@@ -55,12 +55,11 @@ export class StylesService implements Styles {
   }
 
   set(styles: StylesProperty): void {
-    const set = new Set(Object.keys(this.styles));
-    const toRemove = Object.keys(styles)
-      .filter(s => set.has(s));
+    const toRemove = Object.keys(this.styles)
+      .filter(s => styles[s as keyof typeof styles] !== this.styles[s as keyof typeof this.styles]);
 
-    const styleKeys = new Set(Object.keys(styles));
-    const toAdd = Object.keys(this.styles).filter(s => !styleKeys.has(s))
+    const toAdd = Object.keys(styles)
+      .filter(s => styles[s as keyof typeof styles] !== this.styles[s as keyof typeof this.styles])
       .reduce(
         (previousValue, currentValue) => ({
           ...previousValue,
@@ -68,6 +67,10 @@ export class StylesService implements Styles {
         }),
         {}
       );
+
+    console.log({
+      toAdd, toRemove
+    })
 
     this.remove(...toRemove as Array<StylesPropertyName>);
     this.add(toAdd as StylesProperty);
@@ -79,21 +82,11 @@ export class StylesService implements Styles {
     return prev;
   }
 
-  toggle(styles: StylesProperty): void {
-    const set = new Set(Object.keys(this.styles));
-    const toAdd = Object.keys(styles).filter(s => !set.has(s))
-      .reduce(
-        (previousValue, currentValue) => ({
-          ...previousValue,
-          [currentValue]: styles[currentValue as keyof StylesProperty]
-        }),
-        {}
-      );
-
-    const toRemove = Object.keys(styles).filter(s => set.has(s));
-
-    this.add(toAdd as StylesProperty);
-    this.remove(...toRemove as Array<StylesPropertyName>);
+  toString(): string {
+    return Object.entries(this.styles)
+      .filter(e => !!e[0] && !!e[1])
+      .map(e => e.join(':'))
+      .join(';')
   }
 
   private removeStyle(property: Array<StylesPropertyName>): void {

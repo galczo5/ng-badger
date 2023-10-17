@@ -1,27 +1,23 @@
-# NgBadgerApp
+# ng-badger 🦡
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
+Welcome to the world of ng-badger, an Angular library that empowers developers with an exceptional suite of capabilities. This library harnesses the cutting-edge features of Angular, ensuring an unparalleled developer experience.
 
-## Development server
+**Modern Angular Mastery with ng-badger**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+`ng-badger` doesn't just simplify Angular development; it supercharges it. We've harnessed the latest and greatest features of Angular to provide you with a developer experience that's second to none. Discover how `ng-badger` can transform the way you build Angular applications.
 
-## Code scaffolding
+**Discover `ng-badger` through Storybook**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installation
 
-## Running unit tests
+Embark on your `ng-badger` journey with these straightforward installation steps:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm install --save ng-badger
 
-## Running end-to-end tests
+# or
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+yarn add ng-badger
+```

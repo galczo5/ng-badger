@@ -3,7 +3,7 @@ import {hostStyles} from "./host-styles";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 
 @Component({
-  selector: 'test',
+  selector: 'app-test',
   template: '',
   standalone: true
 })

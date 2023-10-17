@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {inject, Injectable} from '@angular/core';
 import {CssClasses} from "./css-classes";
 
@@ -33,6 +34,7 @@ export class NoopCssClassesService implements CssClasses {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function noopCssClasses(...initWithCssClass: Array<string>): CssClasses {
   return inject(NoopCssClassesService);
 }

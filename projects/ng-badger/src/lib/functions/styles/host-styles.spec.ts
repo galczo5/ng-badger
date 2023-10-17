@@ -5,7 +5,7 @@ import {stylesFactory} from "./styles-factory";
 import {By} from "@angular/platform-browser";
 
 @Component({
-  selector: 'test',
+  selector: 'app-test',
   template: '<div #test id="test"></div>',
   standalone: true
 })

@@ -5,6 +5,7 @@ export function listenerFactory<T>(eventName: string): (elementRef: ElementRef) 
   return elementRef => fromEvent<T>(elementRef.nativeElement, eventName);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function noopListener<T>(eventName: string): Observable<T> {
   return of<T>();
 }

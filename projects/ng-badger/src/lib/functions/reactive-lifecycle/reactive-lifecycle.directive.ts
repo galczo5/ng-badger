@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/use-lifecycle-interface,@angular-eslint/no-empty-lifecycle-method,@typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars */
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -12,6 +13,7 @@ import {
 } from '@angular/core';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[reactiveLifecycle]',
   standalone: true
 })

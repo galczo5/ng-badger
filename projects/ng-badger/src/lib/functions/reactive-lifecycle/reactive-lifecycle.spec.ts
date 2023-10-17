@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/use-lifecycle-interface,@angular-eslint/no-empty-lifecycle-method,@typescript-eslint/no-empty-function */
 import {Component, Input, SimpleChanges} from "@angular/core";
 import {ReactiveLifecycleDirective} from "./reactive-lifecycle.directive";
 import {onChanges} from "./on-changes";
@@ -11,7 +12,7 @@ import {onDestroy} from "./on-destroy";
 import {take} from "rxjs";
 
 @Component({
-  selector: 'test',
+  selector: 'app-test',
   template: '',
   standalone: true
 })
@@ -35,6 +36,7 @@ export class TestComponent extends ReactiveLifecycleDirective {
     super();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   override ngOnChanges(changes: SimpleChanges) {
     this.hooks.push('ngOnChanges');
   }

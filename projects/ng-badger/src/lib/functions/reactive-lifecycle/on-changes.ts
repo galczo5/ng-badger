@@ -14,7 +14,7 @@ export function onChanges<T extends ReactiveLifecycleDirective>(
 
   component.ngOnChanges = (simpleChanges: SimpleChanges) => {
     const anyInputChanged = [...inputs]
-      .map(i => simpleChanges[i as unknown as any])
+      .map(i => simpleChanges[i as keyof typeof simpleChanges])
       .some(Boolean);
 
     if (anyInputChanged) {

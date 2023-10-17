@@ -5,7 +5,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {take} from "rxjs";
 
 @Component({
-  selector: 'test',
+  selector: 'app-test',
   template: '',
   standalone: true,
   imports: [CommonModule]

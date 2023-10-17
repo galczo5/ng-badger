@@ -5,7 +5,7 @@ import {CssClasses} from "./css-classes";
 import {cssClassesFactory} from "./css-classes-factory";
 
 @Component({
-  selector: 'test',
+  selector: 'app-test',
   template: '<div #test id="test"></div>',
   standalone: true,
   imports: [CommonModule]

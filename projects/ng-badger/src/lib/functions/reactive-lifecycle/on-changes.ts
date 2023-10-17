@@ -21,7 +21,7 @@ export function onChanges<T extends ReactiveLifecycleDirective>(
       result.next(simpleChanges);
     }
 
-    original(simpleChanges);
+    original.bind(component)(simpleChanges);
   };
 
   return result;

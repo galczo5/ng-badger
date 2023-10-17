@@ -21,7 +21,7 @@ export function parameterlessHookStream<T extends ParameterlessHooks>(
 
   component[method] = () => {
     result.next(void 0);
-    original();
+    original.bind(component)();
   }
 
   return result;

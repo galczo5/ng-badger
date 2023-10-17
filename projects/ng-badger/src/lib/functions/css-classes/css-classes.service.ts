@@ -60,11 +60,15 @@ export class CssClassesService implements CssClasses {
   }
 
   toggle(...cssClasses: Array<string>): void {
-    const set = new Set(cssClasses);
-    const toAdd = this.classes.filter(c => !set.has(c));
-    const toRemove = this.classes.filter(c => set.has(c));
+    const set = new Set(this.classes);
+    const toAdd = cssClasses.filter(c => !set.has(c));
+    const toRemove = cssClasses.filter(c => set.has(c));
     this.add(...toAdd);
     this.remove(...toRemove);
+  }
+
+  toString(): string {
+    return this.classes.join(' ');
   }
 
   private addClasses(cssClasses: ReadonlyArray<string>): void {

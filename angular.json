@@ -100,24 +100,6 @@
               "src/**/*.html"
             ]
           }
-        },
-        "storybook": {
-          "builder": "@storybook/angular:start-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "ng-badger-app:build",
-            "compodoc": false,
-            "port": 6006
-          }
-        },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "ng-badger-app:build",
-            "compodoc": false,
-            "outputDir": "dist/storybook/ng-badger-app"
-          }
         }
       }
     },

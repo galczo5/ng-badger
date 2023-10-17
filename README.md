@@ -8,7 +8,7 @@ Welcome to the world of ng-badger, an Angular library that empowers developers w
 
 **Discover `ng-badger` through Storybook**
 
-
+[Click here to open Storybook](https://galczo5.github.io/ng-badger/)
 
 ## Installation
 

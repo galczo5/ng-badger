@@ -28,4 +28,4 @@ jobs:
     - run: yarn run ng build ng-badger
     - run: yarn run ng test ng-badger --browsers=ChromeHeadless --watch=false --code-coverage
     - run: yarn run ng lint ng-badger
-    - run: yarn run ng ng-badger-app:build-storybook
+    - run: yarn run ng run ng-badger-app:build-storybook

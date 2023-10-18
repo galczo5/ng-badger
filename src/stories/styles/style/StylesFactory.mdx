@@ -2,3 +2,44 @@ import {Meta} from "@storybook/blocks";
 
 <Meta title="Styles/ Style / stylesFactory"/>
 
+```javascript
+import {stylesFactory} from 'ng-badger';
+```
+
+# Overview:
+
+`stylesFactory` extends the capabilities of `hostStyles` by giving you control over the `ElementRef` where styles should be applied or manipulated. This is particularly valuable when you need to manage styles on elements beyond the component host, providing you with a wide range of styling possibilities.
+
+## Key Benefits:
+
+- **Element Flexibility:** With `stylesFactory`, you can select any `ElementRef` in your Angular application, allowing for greater control over style management.
+
+- **No Change Detection Overhead:** Similar to `hostStyles`, `stylesFactory` does not trigger change detection, ensuring efficient style management.
+
+## Usage
+
+```typescript
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Styles, stylesFactory} from "ng-badger";
+
+@Component({
+  selector: 'app-test',
+  template: '<div #el></div>',
+  standalone: true
+})
+export class TestComponent implements OnInit {
+
+  @ViewChild('el', {read: ElementRef, static: true})
+  child!: ElementRef;
+
+  style!: Styles;
+
+  private factory = stylesFactory();
+
+  ngOnInit() {
+    this.style = this.factory(this.child)({color: 'initial'});
+  }
+}
+```
+
+The usage of `stylesFactory` is similar to that of `hostStyles`. For detailed instructions and examples on how to utilize `stylesFactory` for managing styles within your Angular application, please refer to the documentation for `hostStyles`. It provides comprehensive information on the common approach and methods shared between both functions, ensuring that you can efficiently manage styles while maintaining code readability and performance.

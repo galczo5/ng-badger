@@ -2,3 +2,115 @@ import {Meta} from "@storybook/blocks";
 
 <Meta title="Styles / Style / hostStyles"/>
 
+```javascript
+import {hostStyles} from 'ng-badger';
+```
+
+# Overview:
+
+`hostStyles` is a valuable function within the `ng-badger` library, designed to simplify the management of styles for the component host in your Angular application. This function operates in a manner similar to `hostClasses`, providing an efficient and descriptive way to manipulate styles on the component host without triggering change detection.
+
+## Key Benefits:
+
+- **No Change Detection Overhead:** With `hostStyles`, you can efficiently apply, add, or remove styles to the component host without incurring any change detection overhead, ensuring optimal performance.
+
+- **Descriptive and Readable:** `hostStyles` enhances the readability and maintainability of your code by allowing you to express how styles are applied or modified in a clear and descriptive manner, making your code more self-explanatory and easier to understand.
+
+These benefits make `hostStyles` a valuable tool for managing styles on the component host in a more efficient, expressive, and performance-friendly way within your Angular application.
+
+## Usage
+
+```typescript
+import {Component} from "@angular/core";
+import {hostStyles, Styles} from "ng-badger";
+
+@Component({
+    selector: 'example',
+    template: '...',
+    standalone: true
+})
+export class ExampleComponent {
+
+    private readonly backgroundStyles: Styles = hostStyles({ background: 'red' });
+
+}
+```
+
+
+The `hostStyles` function offers a comprehensive set of methods to add, remove, and manage styles for the component host within your Angular application. These methods provide you with fine-grained control over the styling of your component host, enhancing the versatility and precision of your styling tasks.
+
+<table>
+  <thead>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>`set(styles: StylesProperty): void;`</td>
+    <td>Replace all existing styles in instance of `Styles` object</td>
+  </tr>
+  <tr>
+    <td>`add(styles: StylesProperty): void;`</td>
+    <td>Add styles to instance of `CssClasses` object</td>
+  </tr>
+  <tr>
+    <td>`get(): StylesProperty;`</td>
+    <td>Get all set styles</td>
+  </tr>
+  <tr>
+    <td>`contains(property: StylesPropertyName): boolean;`</td>
+    <td>Check if style is set</td>
+  </tr>
+  <tr>
+    <td>`remove(...property: StylesPropertyName[]): void;`</td>
+    <td>Remove style</td>
+  </tr>
+  <tr>
+    <td>`removeAll(): void;`</td>
+    <td>Remove all styles</td>
+  </tr>
+  <tr>
+    <td>`swap(styles: StylesProperty): StylesProperty;`</td>
+    <td>Swap all styles. It works as remove all and set new styles. Method returns previously set styles.</td>
+  </tr>
+  <tr>
+    <td>`toString(): string;`</td>
+    <td>Return styles string. Format: `property:value;property:value`</td>
+  </tr>
+  </tbody>
+</table>
+
+`hostStyles` harnesses the full potential of TypeScript's type system to ensure that all styles are meticulously typed. This approach alleviates the concern of misspelled or incorrect CSS properties, providing a robust and reliable solution for managing styles in your Angular application.
+
+By leveraging TypeScript's type system, `hostStyles` offers the following advantages:
+
+- **Type Safety:** Styles are checked against their correct typings, preventing errors due to misspelled properties or incorrect value types.
+
+- **Code Completion:** TypeScript's autocompletion features make it easier to explore and apply styles, enhancing developer productivity.
+
+- **Compile-Time Validation:** Style-related issues are identified and resolved at compile time, reducing the likelihood of runtime errors related to styling.
+
+This emphasis on type safety and TypeScript's features significantly improves the robustness and correctness of your application's styles, contributing to a smoother development experience. With `hostStyles`, you can confidently manage your styles, knowing that the type system has your back.
+
+It's important to note that all methods within the `hostStyles` function are confined to the respective `Styles` object they are called on. This means that when you use the `removeAll` method, it exclusively removes the styles that were set within the same `Styles` object. Styles applied using different instances or other styling methods remain unaffected.
+
+This method scope restriction allows for precision and isolation in style management, facilitating the use of multiple `Styles` objects or alternative styling techniques as needed. With this approach, you have the flexibility to tailor your styling strategy to your specific requirements and maintain a well-organized and granular approach to managing styles in your Angular application.
+
+```typescript
+import {Component} from "@angular/core";
+import {hostStyles, Styles} from "ng-badger";
+
+@Component({
+    selector: 'example',
+    template: '...',
+    standalone: true
+})
+export class ExampleComponent {
+
+    private readonly backgroundStyles: Styles = hostStyles({ background: 'red' });
+    private readonly textStyles: Styles = hostStyles({ color: 'white' });
+
+}
+```

@@ -58,6 +58,7 @@
     "ng-packagr": "^16.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "remark-gfm": "^4.0.0",
     "storybook": "^7.5.0",
     "typescript": "~5.1.3"
   }

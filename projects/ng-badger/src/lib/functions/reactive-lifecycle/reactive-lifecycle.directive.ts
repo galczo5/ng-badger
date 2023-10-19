@@ -11,14 +11,19 @@ import {
   OnInit,
   SimpleChanges
 } from '@angular/core';
+import {BadgerComponent} from "../component/badger-component.directive";
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[reactiveLifecycle]',
   standalone: true
 })
-export class ReactiveLifecycleDirective implements OnChanges, OnInit, DoCheck,
+export class ReactiveLifecycleDirective extends BadgerComponent implements OnChanges, OnInit, DoCheck,
   AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked, OnDestroy {
+
+  constructor() {
+    super();
+  }
 
   /**
    * @deprecated

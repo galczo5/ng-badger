@@ -2,3 +2,53 @@ import {Meta} from "@storybook/blocks";
 
 <Meta title="Reactivity / Listeners / zonelessListenerFactory"/>
 
+```javascript
+import {zonelessListenerFactory} from 'ng-badger';
+```
+# Overview
+
+`zonelessListenerFactory` operates in the same vein as `listenerFactory` in the context of event handling. It empowers you to manage events in a manner similar to `zonelessHostListener`, avoiding the initiation of change detection cycles, which is ideal for maintaining high performance in your application.
+
+## Key Features
+
+- **Efficient Event Handling:** `zonelessListenerFactory` ensures that event handling is performed without triggering change detection, making it a high-performance solution for your application.
+
+
+## Usage
+
+```typescript
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {AsyncPipe, CommonModule} from "@angular/common";
+import {zonelessListenerFactory} from "ng-badger";
+import {map,of} from "rxjs";
+
+@Component({
+  selector: 'example',
+  template: '<div #el>{{ click$ | async }}</div>',
+  standalone: true,
+  imports: [CommonModule, AsyncPipe]
+})
+export class ExampleComponent implements OnInit {
+
+    @ViewChild('el', { read: ElementRef, static: true })
+    child!: ElementRef;
+
+    click$ = of();
+
+    private readonly factory = zonelessListenerFactory('click');
+
+    ngOnInit() {
+        this.click$ = this.factory(this.child)
+            .pipe(
+                map(() => 'Click!')
+            );
+    }
+}
+
+```
+
+### Usage Note
+
+For specific details on how to use `zonelessListenerFactory`, please refer to the documentation for `listenerFactory` in the `ng-badger` library. The usage pattern for `zonelessListenerFactory` closely resembles that of `listenerFactory`, with the added benefit of avoiding changes in your application's state.
+
+If you have any further questions or need assistance with `zonelessListenerFactory` or related topics, please feel free to ask.

@@ -2,3 +2,41 @@ import {Meta} from "@storybook/blocks";
 
 <Meta title="Reactivity / Listeners / hostListener"/>
 
+```javascript
+import {hostListener} from 'ng-badger';
+```
+
+# Overview
+
+`hostListener` is designed to streamline event handling in your Angular application, in the spirit of Angular's `@HostListener`. However, unlike conventional event listeners, `hostListener` takes advantage of RxJS observables, enabling you to use a wide array of operators to control and manipulate events. This results in a more reactive and expressive codebase, making it easier to respond to user interactions and changes in your application.
+
+## Key Advantages
+
+- **Reactive Event Handling:** With `hostListener`, events become reactive streams, providing you with the power to use RxJS operators to respond to and manipulate events in a declarative and efficient way.
+
+- **Enhanced Code Readability:** By leveraging reactive programming, `hostListener` makes your code more expressive and readable, allowing you to create event-driven logic that is easier to understand and maintain.
+
+- **Adaptability:** `hostListener` equips you with the tools to dynamically respond to events and user interactions, ensuring that your application remains adaptable and responsive.
+
+## Usage
+
+```typescript
+import {Component} from "@angular/core";
+import {AsyncPipe, CommonModule} from "@angular/common";
+import {hostListener} from "ng-badger";
+import {map} from "rxjs";
+
+@Component({
+  selector: 'example',
+  template: '{{ click$ | async }}',
+  standalone: true,
+  imports: [CommonModule, AsyncPipe]
+})
+export class ExampleComponent {
+  click$ = hostListener('click')
+    .pipe(
+        map(() => 'click!')
+    );
+}
+
+```

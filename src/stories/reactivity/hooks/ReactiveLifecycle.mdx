@@ -2,3 +2,238 @@ import {Meta} from "@storybook/blocks";
 
 <Meta title="Reactivity / Hooks / Reactive lifecycle hooks"/>
 
+In Angular, lifecycle hooks represent key events in the life of a component, such as initialization, content rendering, and destruction. These hooks provide opportunities to execute custom logic at specific moments during the component's lifecycle.
+
+The methods available for converting Angular's traditional lifecycle hooks into RxJS streams empower you to write more reactive and efficient code. This conversion allows you to manage the component's lifecycle and events using the power of RxJS observables and operators.
+
+By transforming lifecycle hooks into RxJS streams, you gain the following advantages:
+
+1. **Reactive Approach:** You can work with component lifecycle events in a reactive manner, using RxJS operators to respond to changes and events as they occur.
+
+2. **Granular Control:** With streams, you have fine-grained control over the execution of code during different phases of a component's lifecycle, making it easier to manage complex interactions and asynchronous operations.
+
+3. **Increased Code Readability:** The use of RxJS streams in place of lifecycle hooks often results in cleaner, more readable code, as you can express complex logic in a declarative and organized way.
+
+These methods enable you to harness the power of reactive programming within your Angular components, providing a more efficient and effective approach to handling component lifecycles and events. You can seamlessly integrate RxJS observables and operators to create responsive and robust components.
+
+<table>
+  <thead>
+  <tr>
+    <th>Function</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tr>
+    <td>`onChanges()`</td>
+    <td>Emits a value on OnChanges hook execution</td>
+  </tr>
+  <tr>
+    <td>`onInit()`</td>
+    <td>Emits a value on OnInit hook execution</td>
+  </tr>
+  <tr>
+    <td>`doCheck()`</td>
+    <td>Emits a value on DoCheck hook execution</td>
+  </tr>
+  <tr>
+    <td>`afterViewInit()`</td>
+    <td>Emits a value on AfterViewInit hook execution</td>
+  </tr>
+  <tr>
+    <td>`afterViewChecked()`</td>
+    <td>Emits a value on AfterViewChecked hook execution</td>
+  </tr>
+  <tr>
+    <td>`afterContentInit()`</td>
+    <td>Emits a value on AfterContentInit hook execution</td>
+  </tr>
+  <tr>
+    <td>`afterContentChecked()`</td>
+    <td>Emits a value on AfterContentChecked hook execution</td>
+  </tr>
+  <tr>
+    <td>`onDestroy()`</td>
+    <td>Emits a value on OnDestroy hook execution</td>
+  </tr>
+</table>
+
+## Usage
+
+```typescript
+import {Component, Input} from "@angular/core";
+import {
+    afterContentChecked,
+    afterContentInit,
+    afterViewChecked,
+    afterViewInit,
+    doCheck,
+    onChanges,
+    onDestroy,
+    onInit,
+    ReactiveLifecycleDirective
+} from "ng-badger";
+import {map} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+
+@Component({
+  selector: 'example',
+  template: '',
+  standalone: true
+})
+export class ExampleComponent extends ReactiveLifecycleDirective {
+
+    @Input()
+    input!: string;
+
+    onChanges$ = onChanges(this, 'input')
+        .pipe(
+            map(() => 'onChanges'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    onInit$ = onInit(this)
+        .pipe(
+            map(() => 'onInit'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    doCheck$ = doCheck(this)
+        .pipe(
+            map(() => 'doCheck'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    afterViewInit$ = afterViewInit(this)
+        .pipe(
+            map(() => 'afterViewInit'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    afterViewChecked$ = afterViewChecked(this)
+        .pipe(
+            map(() => 'afterViewChecked'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    afterContentInit$ = afterContentInit(this)
+        .pipe(
+            map(() => 'afterContentInit'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    afterContentChecked$ = afterContentChecked(this)
+        .pipe(
+            map(() => 'afterContentChecked'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    onDestroy$ = onDestroy(this)
+        .pipe(
+            map(() => 'onDestroy'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    constructor() {
+        super();
+    }
+}
+```
+
+### Combining Angular Hooks with Reactive Methods
+
+It's important to note that utilizing the methods for converting Angular lifecycle hooks to RxJS streams doesn't exclude the use of standard Angular hooks. You can still employ the conventional lifecycle hooks provided by Angular in your components. The only requirement is to extend the `ReactiveLifecycleDirective` to access the additional functionality.
+
+By extending the `ReactiveLifecycleDirective`, you gain the ability to seamlessly integrate the reactive methods and leverage RxJS streams to enhance your component's reactivity and event handling. This approach provides the flexibility to choose the best tool for the job while benefiting from the power of reactive programming when necessary.
+
+```typescript
+import {Component, Input} from "@angular/core";
+import {onInit, ReactiveLifecycleDirective} from "ng-badger";
+import {map} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+
+@Component({
+  selector: 'example',
+  template: '',
+  standalone: true
+})
+export class ExampleComponent extends ReactiveLifecycleDirective {
+
+    @Input()
+    input!: string;
+
+    onInit$ = onInit(this)
+        .pipe(
+            map(() => 'onInit'),
+            takeUntilDestroyed()
+        )
+        .subscribe(x => console.log(x));
+
+    constructor() {
+        super();
+    }
+
+    override ngOnInit() {
+        console.log('ngOnInit');
+    }
+}
+```
+
+### Real life usage
+
+Consider a real-world scenario where you're developing a `UserDetailsComponent` for your Angular application. This component is responsible for displaying detailed information about a user and is a great use case for applying reactive programming techniques using RxJS. Here's how you might use the component and RxJS in practice:
+
+**Scenario:**
+
+- The `UserDetailsComponent` is part of your application's user management section.
+
+- It has one input property, `userId`, which is typed as a string.
+
+- The goal is to fetch user details from the backend whenever the `userId` input changes. You need to use Angular's HttpClient to make a request to your backend API.
+
+- Once the data is retrieved, you want to use RxJS to process and convert it into a suitable format for display in your component.
+
+**Implementation:**
+
+```typescript
+import {Component,inject,Input} from "@angular/core";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {onChanges} from "ng-badger";
+import {map, switchMap} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+
+@Component({
+    selector: 'user-details',
+    template: `
+        <div *ngIf="user$ | async as user">
+            {{ user.name }}
+            {{ user.email }}
+            {{ user.address }}
+        </div>
+    `,
+    standalone: true,
+    imports: [HttpClientModule]
+})
+export class UserDetailsComponent {
+
+    @Input({ required: true })
+    userId!: string
+
+    user$ = onChanges(this, 'userId')
+        .pipe(
+            switchMap(() => this.httpClient.get(`https://backend/user/${this.userId}`)),
+            map(() => { /* map your data */ }),
+            takeUntilDestroyed()
+        )
+
+    private readonly httpClient = inject(HttpClient);
+
+}
+```

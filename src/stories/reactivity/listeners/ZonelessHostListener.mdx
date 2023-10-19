@@ -2,3 +2,43 @@ import {Meta} from "@storybook/blocks";
 
 <Meta title="Reactivity / Listeners / zonelessHostListener"/>
 
+```javascript
+import {zonelessHostListener} from 'ng-badger';
+```
+
+# Overview
+
+`zonelessHostListener` is developed to streamline event handling in your Angular application, while avoiding the triggering of change detection cycles. It shares the same event handling capabilities as Angular's `@HostListener` but offers the distinct advantage of maintaining the stability of your application's state during event processing.
+
+## Using NgZone for High Performance
+
+`zonelessHostListener` leverages Angular's `NgZone` to execute code outside of the Angular zone. This approach is desired for high performance, as it prevents unnecessary change detection cycles from being triggered during event handling. By maintaining code execution outside of the Angular zone, `zonelessHostListener` ensures that your application remains responsive and efficient, even when dealing with frequent events.
+
+## Usage
+
+```typescript
+import {Component} from "@angular/core";
+import {AsyncPipe, CommonModule} from "@angular/common";
+import {zonelessHostListener} from "ng-badger";
+import {map} from "rxjs";
+
+@Component({
+  selector: 'example',
+  template: '{{ click$ | async }}',
+  standalone: true,
+  imports: [CommonModule, AsyncPipe]
+})
+export class ExampleComponent {
+  click$ = zonelessHostListener('click')
+    .pipe(
+        map(() => 'click!')
+    );
+}
+
+```
+
+### Usage Note
+
+For specific details on how to use `zonelessHostListener`, please refer to the documentation for `hostListener` in the `ng-badger` library. The usage pattern for `zonelessHostListener` closely resembles that of `hostListener`, but with the added benefit of avoiding changes in your application's state.
+
+If you have any further questions or need assistance with `zonelessHostListener` or related topics, please feel free to ask.

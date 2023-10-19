@@ -1,0 +1,50 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Reactivity / Listeners / listenerFactory"/>
+
+```javascript
+import {listenerFactory} from 'ng-badger';
+```
+
+# Overview
+
+`listenerFactory` is a versatile function within the `ng-badger` library, designed to offer event handling capabilities similar to `hostListener`, with the added flexibility of working with any `ElementRef`. This unique feature empowers you to efficiently manage events on a wide range of elements in your Angular application.
+
+## Key Features
+
+- **Element Flexibility:** With `listenerFactory`, you can select any `ElementRef` in your Angular application, granting you the ability to handle events on a variety of elements, not limited to the component host.
+
+- **Efficient Event Handling:** Similar to `hostListener`, `listenerFactory` ensures efficient and responsive event handling, maintaining a high level of performance in your application.
+
+## Usage
+
+```typescript
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {AsyncPipe, CommonModule} from "@angular/common";
+import {listenerFactory} from "ng-badger";
+import {map,of} from "rxjs";
+
+@Component({
+  selector: 'example',
+  template: '<div #el>{{ click$ | async }}</div>',
+  standalone: true,
+  imports: [CommonModule, AsyncPipe]
+})
+export class ExampleComponent implements OnInit {
+
+    @ViewChild('el', { read: ElementRef, static: true })
+    child!: ElementRef;
+
+    click$ = of();
+
+    private readonly factory = listenerFactory('click');
+
+    ngOnInit() {
+        this.click$ = this.factory(this.child)
+            .pipe(
+                map(() => 'Click!')
+            );
+    }
+}
+
+```

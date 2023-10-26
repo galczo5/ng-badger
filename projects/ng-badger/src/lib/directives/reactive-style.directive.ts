@@ -4,6 +4,7 @@ import {Observable, of, switchMap} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[reactiveStyle]',
   standalone: true
 })

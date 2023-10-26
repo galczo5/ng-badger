@@ -5,6 +5,7 @@ import {onChanges} from "ng-badger";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[reactiveClass]',
   standalone: true
 })

@@ -29,6 +29,6 @@ import {CommonModule} from '@angular/common';
 export class MethodComponent {
 
   @Input()
-  method: string = '';
+  method = '';
 
 }

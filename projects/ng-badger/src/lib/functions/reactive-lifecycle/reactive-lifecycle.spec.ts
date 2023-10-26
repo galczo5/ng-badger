@@ -10,6 +10,7 @@ import {afterContentInit} from "./after-content-init";
 import {afterContentChecked} from "./after-content-checked";
 import {onDestroy} from "./on-destroy";
 import {take} from "rxjs";
+import {TestBed} from "@angular/core/testing";
 
 @Component({
   selector: 'app-test',
@@ -71,10 +72,15 @@ export class TestComponent extends ReactiveLifecycleDirective {
 }
 
 describe('reactive lifecycle', () => {
+  let component!: TestComponent;
+
+  beforeEach(() => {
+      TestBed.configureTestingModule({});
+      component = TestBed.createComponent(TestComponent).componentInstance;
+  });
 
   describe('onChanges()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.onChanges$
         .pipe(take(1))
         .subscribe(changes => {
@@ -95,7 +101,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngOnChanges({});
       expect(component.hooks.includes('ngOnChanges')).toBeTrue();
     });
@@ -103,7 +108,6 @@ describe('reactive lifecycle', () => {
 
   describe('onInit()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.onInit$
         .pipe(take(1))
         .subscribe(() => {
@@ -115,7 +119,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngOnInit();
       expect(component.hooks.includes('ngOnInit')).toBeTrue();
     });
@@ -123,7 +126,6 @@ describe('reactive lifecycle', () => {
 
   describe('doCheck()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.doCheck$
         .pipe(take(1))
         .subscribe(() => {
@@ -135,7 +137,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngDoCheck();
       expect(component.hooks.includes('ngDoCheck')).toBeTrue();
     });
@@ -143,7 +144,6 @@ describe('reactive lifecycle', () => {
 
   describe('afterViewInit()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.afterViewInit$
         .pipe(take(1))
         .subscribe(() => {
@@ -155,7 +155,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngAfterViewInit();
       expect(component.hooks.includes('ngAfterViewInit')).toBeTrue();
     });
@@ -163,7 +162,6 @@ describe('reactive lifecycle', () => {
 
   describe('afterViewChecked()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.afterViewChecked$
         .pipe(take(1))
         .subscribe(() => {
@@ -175,7 +173,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngAfterViewChecked();
       expect(component.hooks.includes('ngAfterViewChecked')).toBeTrue();
     });
@@ -183,7 +180,6 @@ describe('reactive lifecycle', () => {
 
   describe('afterContentInit()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.afterContentInit$
         .pipe(take(1))
         .subscribe(() => {
@@ -195,7 +191,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngAfterContentInit();
       expect(component.hooks.includes('ngAfterContentInit')).toBeTrue();
     });
@@ -203,7 +198,6 @@ describe('reactive lifecycle', () => {
 
   describe('afterContentChecked()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.afterContentChecked$
         .pipe(take(1))
         .subscribe(() => {
@@ -215,7 +209,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngAfterContentChecked();
       expect(component.hooks.includes('ngAfterContentChecked')).toBeTrue();
     });
@@ -223,7 +216,6 @@ describe('reactive lifecycle', () => {
 
   describe('onDestroy()', () => {
     it('should create a stream from lifecycle hook', done => {
-      const component = new TestComponent();
       component.onDestroy$
         .pipe(take(1))
         .subscribe(() => {
@@ -235,7 +227,6 @@ describe('reactive lifecycle', () => {
     });
 
     it('original hook works', () => {
-      const component = new TestComponent();
       component.ngOnDestroy();
       expect(component.hooks.includes('ngOnDestroy')).toBeTrue();
     });

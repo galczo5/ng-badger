@@ -1,7 +1,6 @@
 import {Directive, Input} from '@angular/core';
 import {Observable, of, switchMap} from "rxjs";
-import {hostClasses, ReactiveLifecycleDirective} from "../functions";
-import {onChanges} from "ng-badger";
+import {hostClasses, onChanges, ReactiveLifecycleDirective} from "../functions";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Directive({

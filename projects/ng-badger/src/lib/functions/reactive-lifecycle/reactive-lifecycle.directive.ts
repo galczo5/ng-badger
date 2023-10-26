@@ -11,7 +11,7 @@ import {
   OnInit,
   SimpleChanges
 } from '@angular/core';
-import {BadgerComponent} from "../component/badger-component.directive";
+import {BadgerComponent} from "../../components/badger-component.directive";
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

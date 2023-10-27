@@ -1,5 +1,5 @@
 import {ElementRef, Injectable, Renderer2} from '@angular/core';
-import {CssClasses} from "./css-classes";
+import {CssClasses} from "../../types";
 
 @Injectable()
 export class CssClassesService implements CssClasses {

@@ -1,5 +1,5 @@
 import {ElementRef, Injectable, Renderer2} from '@angular/core';
-import {Styles, StylesProperty, StylesPropertyName} from "./styles";
+import {Styles, StylesProperty, StylesPropertyName} from "../../types";
 
 @Injectable()
 export class StylesService implements Styles {

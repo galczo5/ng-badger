@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {CommonModule} from "@angular/common";
-import {CssClasses} from "./css-classes";
+import {CssClasses} from "../../types";
 import {cssClassesFactory} from "./css-classes-factory";
 
 @Component({

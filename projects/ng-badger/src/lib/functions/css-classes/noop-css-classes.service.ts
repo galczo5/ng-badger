@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {inject, Injectable} from '@angular/core';
-import {CssClasses} from "./css-classes";
+import {CssClasses} from "../../types";
 
 @Injectable({
   providedIn: 'root'

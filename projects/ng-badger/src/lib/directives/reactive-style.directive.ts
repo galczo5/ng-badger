@@ -1,7 +1,8 @@
 import {Directive, Input} from '@angular/core';
-import {hostStyles, onChanges, ReactiveLifecycleDirective, StylesProperty} from "../functions";
+import {hostStyles, onChanges, ReactiveLifecycleDirective} from "../functions";
 import {Observable, of, switchMap} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {StylesProperty} from "../types";
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

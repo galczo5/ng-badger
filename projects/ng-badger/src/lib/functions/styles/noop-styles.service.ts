@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {inject, Injectable} from '@angular/core';
-import {Styles, StylesProperty} from "./styles";
+import {Styles, StylesProperty} from "../../types";
 
 @Injectable({
   providedIn: 'root'

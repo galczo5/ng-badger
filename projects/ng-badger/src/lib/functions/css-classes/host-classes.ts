@@ -1,5 +1,5 @@
 import {ElementRef, inject} from "@angular/core";
-import {CssClasses} from "./css-classes";
+import {CssClasses} from "../../types";
 import {cssClassesFactory} from "./css-classes-factory";
 
 export function hostClasses(...initWithCssClass: Array<string>): CssClasses {

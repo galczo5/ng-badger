@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {Styles} from "./styles";
+import {Styles} from "../../types";
 import {stylesFactory} from "./styles-factory";
 import {By} from "@angular/platform-browser";
 

@@ -1,24 +1,23 @@
-# NgBadger
+# ng-badger 🦡
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Welcome to the world of ng-badger, an Angular library that empowers developers with an exceptional suite of capabilities. This library harnesses the cutting-edge features of Angular, ensuring an unparalleled developer experience.
 
-## Code scaffolding
+**Modern Angular Mastery with ng-badger**
 
-Run `ng generate component component-name --project ng-badger` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-badger`.
-> Note: Don't forget to add `--project ng-badger` or else it will be added to the default project in your `angular.json` file.
+`ng-badger` doesn't just simplify Angular development; it supercharges it. We've harnessed the latest and greatest features of Angular to provide you with a developer experience that's second to none. Discover how `ng-badger` can transform the way you build Angular applications.
 
-## Build
+**Discover `ng-badger` through Storybook**
 
-Run `ng build ng-badger` to build the project. The build artifacts will be stored in the `dist/` directory.
+[Click here to open Storybook](https://galczo5.github.io/ng-badger/)
 
-## Publishing
+## Installation
 
-After building your library with `ng build ng-badger`, go to the dist folder `cd dist/ng-badger` and run `npm publish`.
+Embark on your `ng-badger` journey with these straightforward installation steps:
 
-## Running unit tests
+```bash
+npm install --save ng-badger
 
-Run `ng test ng-badger` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# or
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+yarn add ng-badger
+```

@@ -1,9 +1,9 @@
 import { ReactiveStyleDirective } from './reactive-style.directive';
 import {Component} from "@angular/core";
 import {Subject} from "rxjs";
-import {StylesProperty} from "../functions";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
+import {StylesProperty} from "../types";
 
 @Component({
   selector: 'app-test',

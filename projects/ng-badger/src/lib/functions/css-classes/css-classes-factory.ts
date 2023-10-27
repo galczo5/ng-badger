@@ -1,6 +1,6 @@
 import {ElementRef, inject, Renderer2} from "@angular/core";
 import {CssClassesService} from "./css-classes.service";
-import {CssClasses} from "./css-classes";
+import {CssClasses} from "../../types";
 
 export function cssClassesFactory(): (elementRef: ElementRef) => (initWithCssClass: Array<string>) => CssClasses {
   const renderer = inject(Renderer2);

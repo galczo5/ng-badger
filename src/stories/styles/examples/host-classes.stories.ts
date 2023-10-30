@@ -54,6 +54,9 @@ export class ExampleComponent {
       <button (click)="example.hostClasses.toggle('bg-red')">
         <code>hostClasses.toggle('bg-red')</code>
       </button>
+      <button (click)="console.log(example.hostClasses.toString())">
+        <code>console.log(hostClasses.toString())</code>
+      </button>
     </app-button-group>
   `
 })

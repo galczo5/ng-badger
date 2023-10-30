@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   styles: [`
     :host {
       display: flex;
+      flex-wrap: wrap;
       gap: .5rem;
     }
   `]

@@ -83,6 +83,68 @@
             "stylesData": "\n    :host {\n      display: flex;\n      gap: .5rem;\n    }\n  \n"
         },
         {
+            "name": "ExampleComponent",
+            "id": "component-ExampleComponent-eb19a79ab891b461888d6038f4280c8631788da3262465ba7518aab169cdbe738086acdc63d75edc5dc54bdeb1ba9297c92099b541e1645ba45d59706fba524e",
+            "file": "src/stories/styles/examples/host-classes.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [
+                "\n    :host {\n      display: block;\n    }\n\n    .bg-red {\n      background: red;\n    }\n\n    .bg-blue {\n      background: blue;\n    }\n  "
+            ],
+            "template": "<app-example-text/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "hostClasses",
+                    "defaultValue": "hostClasses()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 31
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport { hostClasses } from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    :host {\n      display: block;\n    }\n\n    .bg-red {\n      background: red;\n    }\n\n    .bg-blue {\n      background: blue;\n    }\n  `]\n})\nexport class ExampleComponent {\n  hostClasses = hostClasses();\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent],\n  template: `\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>\n          hostClasses.set('bg-red')\n        </code>\n      </button>\n      <button>add</button>\n      <button>get</button>\n      <button>contains</button>\n      <button>remove</button>\n      <button>removeAll</button>\n      <button>swap</button>\n      <button>toggle</button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n\n}\n\n\nconst meta: Meta<ExampleComponent> = {\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n};\n\nexport default meta;\n\ntype Story = StoryObj<ExampleWrapperComponent>;\n\nexport const Example: Story = {\n  args: {}\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n    :host {\n      display: block;\n    }\n\n    .bg-red {\n      background: red;\n    }\n\n    .bg-blue {\n      background: blue;\n    }\n  \n"
+        },
+        {
             "name": "ExampleTextComponent",
             "id": "component-ExampleTextComponent-c1f7ab66424b847d369358869938749c9ea17c0ee22f123be2e595564e1f765a854d3e88c66848822ffce82c97c6426be7871aca2f8958e496d50ca7b6a6c992",
             "file": "src/app/example-text/example-text/example-text.component.ts",
@@ -122,43 +184,24 @@
             "stylesData": ""
         },
         {
-            "name": "HostClassesInitExampleComponent",
-            "id": "component-HostClassesInitExampleComponent-1d2218e3daf45308f8b3ec68c5eddc1e543015317ad6568c5ae793822c6e572e2fffed61c4fa410d05566aabc1a8eb8a9322c493f15f37778d782ef223c54996",
-            "file": "src/stories/styles/examples/host-classes-init-example.component.ts",
-            "encapsulation": [
-                "ViewEncapsulation.None"
-            ],
+            "name": "ExampleWrapperComponent",
+            "id": "component-ExampleWrapperComponent-eb19a79ab891b461888d6038f4280c8631788da3262465ba7518aab169cdbe738086acdc63d75edc5dc54bdeb1ba9297c92099b541e1645ba45d59706fba524e",
+            "file": "src/stories/styles/examples/host-classes.stories.ts",
+            "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-host-classes-init",
+            "selector": "app-example-wrapper",
             "styleUrls": [],
-            "styles": [
-                "\n    .initial {\n      display: block;\n      background: #60a5fa;\n      color: white;\n    }\n  "
-            ],
-            "template": "<app-example-text/>\n",
+            "styles": [],
+            "template": "<app-example #example/>\n<app-button-group>\n  <button (click)=\"example.hostClasses.set('bg-red')\">\n    <code>\n      hostClasses.set('bg-red')\n    </code>\n  </button>\n  <button>add</button>\n  <button>get</button>\n  <button>contains</button>\n  <button>remove</button>\n  <button>removeAll</button>\n  <button>swap</button>\n  <button>toggle</button>\n</app-button-group>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [
-                {
-                    "name": "hostClasses",
-                    "defaultValue": "hostClasses('initial')",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 23,
-                    "modifierKind": [
-                        121,
-                        146
-                    ]
-                }
-            ],
+            "propertiesClass": [],
             "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
@@ -167,25 +210,25 @@
             "standalone": true,
             "imports": [
                 {
-                    "name": "CommonModule",
-                    "type": "module"
+                    "name": "ExampleComponent",
+                    "type": "component"
                 },
                 {
-                    "name": "ExampleTextComponent",
+                    "name": "ButtonGroupComponent",
                     "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, ViewEncapsulation} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from 'projects/ng-badger/src/public-api';\n\n@Component({\n  selector: 'app-host-classes-init',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    .initial {\n      display: block;\n      background: #60a5fa;\n      color: white;\n    }\n  `]\n})\nexport class HostClassesInitExampleComponent {\n  private readonly hostClasses = hostClasses('initial');\n}\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport { hostClasses } from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    :host {\n      display: block;\n    }\n\n    .bg-red {\n      background: red;\n    }\n\n    .bg-blue {\n      background: blue;\n    }\n  `]\n})\nexport class ExampleComponent {\n  hostClasses = hostClasses();\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent],\n  template: `\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>\n          hostClasses.set('bg-red')\n        </code>\n      </button>\n      <button>add</button>\n      <button>get</button>\n      <button>contains</button>\n      <button>remove</button>\n      <button>removeAll</button>\n      <button>swap</button>\n      <button>toggle</button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n\n}\n\n\nconst meta: Meta<ExampleComponent> = {\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n};\n\nexport default meta;\n\ntype Story = StoryObj<ExampleWrapperComponent>;\n\nexport const Example: Story = {\n  args: {}\n};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n    .initial {\n      display: block;\n      background: #60a5fa;\n      color: white;\n    }\n  \n"
+            "stylesData": ""
         },
         {
             "name": "MethodComponent",
-            "id": "component-MethodComponent-9e8a3cd1f52c42c0c4014dc9f47823d1d7a4f54da3745692db2c671cdc38327c041e94f8d5b3624f68b12cf2825b8d5da94a4cdb1686ae5a6300d7d850f43c2f",
+            "id": "component-MethodComponent-905c23bf732a60154ef4b9fc940c49cd9636040df0ec46c9d53708b70ccf6913cea171ec3365c25c83a8eaef4bfa6308530c514d6b83782a8decb47545374ce7",
             "file": "src/app/method/method.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -229,7 +272,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {CommonModule} from '@angular/common';\n\n@Component({\n  selector: 'app-method',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <code>{{ method }}</code>\n    <div style=\"width: 1px; background: #d1d5db;\"></div>\n    <div style=\"flex-grow: 1;\">\n      <ng-content></ng-content>\n    </div>\n  `,\n  styles: [`\n    :host {\n      display: flex;\n      gap: 1rem;\n      padding: 1rem;\n      border: 1px solid #d1d5db;\n      border-radius: 4px;\n      margin-bottom: 1rem;\n      background: #f3f4f6;\n      color: black;\n      width: 100%;\n    }\n  `]\n})\nexport class MethodComponent {\n\n  @Input()\n  method: string = '';\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {CommonModule} from '@angular/common';\n\n@Component({\n  selector: 'app-method',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <code>{{ method }}</code>\n    <div style=\"width: 1px; background: #d1d5db;\"></div>\n    <div style=\"flex-grow: 1;\">\n      <ng-content></ng-content>\n    </div>\n  `,\n  styles: [`\n    :host {\n      display: flex;\n      gap: 1rem;\n      padding: 1rem;\n      border: 1px solid #d1d5db;\n      border-radius: 4px;\n      margin-bottom: 1rem;\n      background: #f3f4f6;\n      color: black;\n      width: 100%;\n    }\n  `]\n})\nexport class MethodComponent {\n\n  @Input()\n  method = '';\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n    :host {\n      display: flex;\n      gap: 1rem;\n      padding: 1rem;\n      border: 1px solid #d1d5db;\n      border-radius: 4px;\n      margin-bottom: 1rem;\n      background: #f3f4f6;\n      color: black;\n      width: 100%;\n    }\n  \n"
@@ -300,8 +343,8 @@
                 "file": "src/stories/styles/examples/host-classes.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta<HostClassesInitExampleComponent>",
-                "defaultValue": "{\n  title: 'Styles/Examples/hostClasses',\n  component: HostClassesInitExampleComponent\n}"
+                "type": "Meta<ExampleComponent>",
+                "defaultValue": "{\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n}"
             },
             {
                 "name": "preview",
@@ -320,7 +363,7 @@
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "StoryObj<HostClassesInitExampleComponent>",
+                "rawtype": "StoryObj<ExampleWrapperComponent>",
                 "file": "src/stories/styles/examples/host-classes.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -348,8 +391,8 @@
                     "file": "src/stories/styles/examples/host-classes.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Meta<HostClassesInitExampleComponent>",
-                    "defaultValue": "{\n  title: 'Styles/Examples/hostClasses',\n  component: HostClassesInitExampleComponent\n}"
+                    "type": "Meta<ExampleComponent>",
+                    "defaultValue": "{\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n}"
                 }
             ],
             ".storybook/preview.ts": [
@@ -373,7 +416,7 @@
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "StoryObj<HostClassesInitExampleComponent>",
+                    "rawtype": "StoryObj<ExampleWrapperComponent>",
                     "file": "src/stories/styles/examples/host-classes.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -435,12 +478,21 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/styles/examples/host-classes-init-example.component.ts",
+                "filePath": "src/stories/styles/examples/host-classes.stories.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "HostClassesInitExampleComponent",
+                "name": "ExampleComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleWrapperComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {

@@ -4,6 +4,7 @@ import {CommonModule} from "@angular/common";
 import {ExampleTextComponent} from "../../../app/example-text/example-text/example-text.component";
 import { hostClasses } from "projects/ng-badger/src/public-api";
 import {ButtonGroupComponent} from "../../../app/button-group/button-group.component";
+import {GithubLinkComponent} from "../../../app/github-link/github-link.component";
 
 @Component({
   selector: 'app-example',
@@ -26,8 +27,9 @@ export class ExampleComponent {
 @Component({
   selector: 'app-example-wrapper',
   standalone: true,
-  imports: [ExampleComponent, ButtonGroupComponent],
+  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],
   template: `
+    <app-github-link src="/src/stories/styles/examples/host-classes.stories.ts"/>
     <app-example #example/>
     <app-button-group>
       <button (click)="example.hostClasses.set('bg-red')">

@@ -68,10 +68,6 @@ export class StylesService implements Styles {
         {}
       );
 
-    console.log({
-      toAdd, toRemove
-    })
-
     this.remove(...toRemove as Array<StylesPropertyName>);
     this.add(toAdd as StylesProperty);
   }

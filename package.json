@@ -9,7 +9,7 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "lint": "ng lint",
-        "release": "ng build ng-badger && cd dist/ng-badger && yarn publish",
+        "release": "ng build ng-badger && cd dist/ng-badger && yarn publish && yarn deploy-storybook",
         "storybook": "ng run ng-badger-app:storybook",
         "build-storybook": "ng run ng-badger-app:build-storybook",
         "deploy-storybook": "yarn build-storybook && gh-pages -d dist/storybook/ng-badger-app"

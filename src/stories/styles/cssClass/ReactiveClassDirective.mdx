@@ -1,0 +1,99 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Styles / Css classes / ReactiveClassDirective"/>
+
+```javascript
+import {ReactiveClassDirective} from 'ng-badger';
+```
+
+# Overview
+
+The `ReactiveClassDirective` in ng-badger introduces a fresh paradigm for handling CSS classes in your Angular components. It does so by harnessing the power of reactive programming. This directive is built upon the solid foundation of the hostClasses function, which itself is a key feature of the library. By using `ReactiveClassDirective`, you can seamlessly work with CSS class streams, responding to changes and user interactions in a highly reactive and declarative manner.
+
+## Boosting Reactivity, Reducing Imperative Code
+
+One of the primary advantages of `ReactiveClassDirective` is its ability to boost reactivity in your application while reducing the need for imperative code. You can define your class streams using the directive, and changes in these streams automatically reflect in your component's HTML, creating a more efficient and responsive user experience. This is in stark contrast to the traditional imperative approach of manipulating classes directly within your component code.
+
+## Usage
+
+```typescript
+import {Component, ViewEncapsulation} from "@angular/core";
+import {ReactiveClassDirective} from "ng-badger";
+import {ExampleTextComponent} from "../../../app/example-text/example-text/example-text.component";
+import {interval, map} from "rxjs";
+
+@Component({
+    selector: 'app-example',
+    template: `
+        <app-example-text [reactiveClass]="classes$"/>
+    `,
+    imports: [
+        ExampleTextComponent,
+        ReactiveClassDirective
+    ],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    styles: [`
+        .red {
+            display: block;
+            background: red;
+        }
+
+        .blue {
+            display: block;
+            background: blue;
+        }
+    `]
+})
+export class ZonelessExampleComponent {
+    classes$ = interval(1000)
+            .pipe(map(i => i % 2 ? 'red' : 'blue'));
+}
+```
+
+## Beyond the Boundaries of ng-zones
+
+Traditionally, Angular relies on ng-zones for automatic change detection—a mechanism that ensures the view remains in sync with the application's state. While this approach is essential in many scenarios, it can introduce performance overhead, especially in high-frequency updates.
+
+`ReactiveClassDirective` challenges this status quo by operating seamlessly outside the boundaries of ng-zones. This means that changes to CSS classes and styling applied with this directive don't trigger automatic change detection cycles. As a result, you can create fast and highly efficient applications without the constant concern of performance bottlenecks introduced by ng-zones.
+
+```typescript
+import {Component, NgZone, ViewEncapsulation} from "@angular/core";
+import {ExampleTextComponent} from "../../../app/example-text/example-text/example-text.component";
+import {ReactiveClassDirective} from "ng-badger";
+import {interval, map, Observable} from "rxjs";
+
+@Component({
+    selector: 'app-example',
+    template: `
+        <app-example-text [reactiveClass]="classes$"/>
+    `,
+    imports: [
+        ExampleTextComponent,
+        ReactiveClassDirective
+    ],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    styles: [`
+        .red {
+            display: block;
+            background: red;
+        }
+
+        .blue {
+            display: block;
+            background: blue;
+        }
+    `]
+})
+export class ZonelessExampleComponent {
+    classes$!: Observable<string>;
+
+    constructor(ngZone: NgZone) {
+        ngZone.runOutsideAngular(() => {
+            this.classes$ = interval(1000)
+                .pipe(map(i => i % 2 ? 'red' : 'blue'))
+        });
+    }
+}
+```

@@ -1,6 +1,6 @@
-import {Markdown, Meta} from "@storybook/blocks";
+import {Meta} from "@storybook/blocks";
 
-<Meta title="Styles / Css Classes / hostClasses"/>
+<Meta title="Styles / Css classes / hostClasses"/>
 
 ```javascript
 import {hostClasses} from 'ng-badger';
@@ -40,50 +40,50 @@ export class ExampleComponent {
 When you call `hostClasses`, it returns a CssClasses object. This object provides a set of methods that allow you to efficiently manipulate the CSS classes of the component host in your Angular application. These methods enable you to add, remove, or modify classes as needed, all while maintaining code readability and avoiding change detection overhead.
 
 <table>
-  <thead>
-  <tr>
-    <th>Method</th>
-    <th>Description</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>`set(...cssClasses: string[]): void;`</td>
-    <td>Replace all existing classes in instance of `CssClasses` object</td>
-  </tr>
-  <tr>
-    <td>`add(...cssClasses: string[]): void;`</td>
-    <td>Add class to instance of `CssClasses` object</td>
-  </tr>
-  <tr>
-    <td>`get(): string[];`</td>
-    <td>Get all set classes</td>
-  </tr>
-  <tr>
-    <td>`contains(cssClass: string): boolean;`</td>
-    <td>Check if class is set</td>
-  </tr>
-  <tr>
-    <td>`remove(...cssClasses: string[]): void;`</td>
-    <td>Remove css classes</td>
-  </tr>
-  <tr>
-    <td>`removeAll(): void;`</td>
-    <td>Remove all classes set in instance of `CssClasses`</td>
-  </tr>
-  <tr>
-    <td>`swap(...cssClasses: string[]): string[];`</td>
-    <td>Swap all classes. It works as remove all and set new classes. Method returns previously set classes.</td>
-  </tr>
-  <tr>
-    <td>`toggle(...cssClasses: string[]): void;`</td>
-    <td>Add class if not set, remove if set.</td>
-  </tr>
-  <tr>
-    <td>`toString(): string;`</td>
-    <td>Join all classes to a string. String format: `class1 class2 class3`</td>
-  </tr>
-  </tbody>
+	<thead>
+	<tr>
+		<th>Method</th>
+		<th>Description</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>`set(...cssClasses: string[]): void;`</td>
+		<td>Replace all existing classes in instance of `CssClasses` object</td>
+	</tr>
+	<tr>
+		<td>`add(...cssClasses: string[]): void;`</td>
+		<td>Add class to instance of `CssClasses` object</td>
+	</tr>
+	<tr>
+		<td>`get(): string[];`</td>
+		<td>Get all set classes</td>
+	</tr>
+	<tr>
+		<td>`contains(cssClass: string): boolean;`</td>
+		<td>Check if class is set</td>
+	</tr>
+	<tr>
+		<td>`remove(...cssClasses: string[]): void;`</td>
+		<td>Remove css classes</td>
+	</tr>
+	<tr>
+		<td>`removeAll(): void;`</td>
+		<td>Remove all classes set in instance of `CssClasses`</td>
+	</tr>
+	<tr>
+		<td>`swap(...cssClasses: string[]): string[];`</td>
+		<td>Swap all classes. It works as remove all and set new classes. Method returns previously set classes.</td>
+	</tr>
+	<tr>
+		<td>`toggle(...cssClasses: string[]): void;`</td>
+		<td>Add class if not set, remove if set.</td>
+	</tr>
+	<tr>
+		<td>`toString(): string;`</td>
+		<td>Join all classes to a string. String format: `class1 class2 class3`</td>
+	</tr>
+	</tbody>
 </table>
 
 It's important to note that all methods provided by the `CssClasses` object are designed to work exclusively on the instance of `CssClasses` they are called on. For instance, if you use the `removeAll` method, it will only remove classes that were previously added or manipulated using methods within the same instance of `CssClasses`. Classes added using other instances or approaches will not be affected.

@@ -1,0 +1,55 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Styles / Style / ReactiveStyleDirective"/>
+
+```javascript
+import {ReactiveStyleDirective} from 'ng-badger';
+```
+
+# Overview
+
+Much like its counterpart, the `ReactiveStyleDirective` upholds the values of reactivity and maintainability within Angular applications. It taps into the core functionality of the `hostStyles` function, ensuring that developers can embrace the principles of reactive programming not just for class manipulation but also for styling. This is a significant departure from the traditional approach of imperative styling in Angular, offering a more descriptive, efficient, and expressive way to work with styles that aligns with the dynamic nature of web applications.
+
+## Achieving the Same Advantages: Now for Styling
+
+The `ReactiveStyleDirective` mirrors the key advantages and reactivity enhancements offered by the `ReactiveClassDirective`, but it extends these benefits to styling. It empowers developers to streamline the management of styling in Angular components while reducing the need for imperative code. By defining styling streams using this directive, changes to these streams automatically propagate to your component's styling, creating a more efficient and responsive user interface.
+
+## Reactivity Beyond Styling: Comprehensive Solution
+
+With the `ReactiveStyleDirective`, reactivity extends to every aspect of your Angular application, including styling. This holistic approach fosters not just enhanced user experiences but also more maintainable codebases. The directive provides the means to ensure that your application's styling remains in sync with changes in data and user interactions, all while adhering to the principles of reactive programming.
+
+In the chapters that follow, we will delve into the capabilities and practical usage of the `ReactiveStyleDirective`. We will explore how this directive can be effectively employed in your Angular applications, offering a powerful new way to infuse reactivity into your styling code while maintaining clarity, performance, and maintainability. Whether you're a seasoned Angular developer or just beginning your journey, the `ReactiveStyleDirective` is your ticket to creating responsive, efficient, and maintainable Angular components, where styling is as dynamic as the rest of your application.
+
+## Usage
+
+```typescript
+import {Component, NgZone, ViewEncapsulation} from "@angular/core";
+import {ExampleTextComponent} from "../../../app/example-text/example-text/example-text.component";
+import {ReactiveStyleDirective, StylesProperty} from "ng-badger";
+import {interval, map, Observable} from "rxjs";
+
+@Component({
+    selector: 'app-example',
+    template: `
+        <app-example-text [reactiveStyle]="classes$"/>
+    `,
+    imports: [
+        ExampleTextComponent,
+        ReactiveStyleDirective
+    ],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true
+})
+export class ZonelessExampleComponent {
+    classes$!: Observable<StylesProperty>;
+
+    constructor(ngZone: NgZone) {
+        ngZone.runOutsideAngular(() => {
+            this.classes$ = interval(1000)
+                .pipe(
+                    map(i => i % 2 ? {color: 'red'} : {color: 'blue'})
+                )
+        });
+    }
+}
+```

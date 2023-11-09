@@ -1,7 +1,9 @@
 import type {Meta, StoryObj} from "@storybook/angular";
-import {Component, DestroyRef, inject, Injectable, Input, OnChanges, SimpleChanges} from "@angular/core";
+import type { OnChanges, SimpleChanges} from "@angular/core";
+import {Component, DestroyRef, inject, Injectable, Input} from "@angular/core";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {Observable, of, switchMap} from "rxjs";
+import type {Observable} from "rxjs";
+import { of, switchMap} from "rxjs";
 import {onChanges, ReactiveLifecycleDirective} from "ng-badger";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {GithubLinkComponent} from "../../../app/github-link/github-link.component";

@@ -1,9 +1,10 @@
 import type {Meta, StoryObj} from "@storybook/angular";
-import {Component, DestroyRef, ElementRef, inject, NgZone, OnInit} from "@angular/core";
+import type { OnInit} from "@angular/core";
+import {Component, DestroyRef, ElementRef, inject, NgZone} from "@angular/core";
 import {fromEvent, map, merge} from "rxjs";
 import {GithubLinkComponent} from "../../../app/github-link/github-link.component";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {zonelessHostListener} from "ng-badger";
+import {zonelessHostListener} from "../../../../projects/ng-badger/src/lib/functions/listener";
 
 @Component({
     selector: 'app-default-example',

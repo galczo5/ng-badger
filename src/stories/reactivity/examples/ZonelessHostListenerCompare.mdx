@@ -1,0 +1,67 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Reactivity / Examples / zonelessHostListener vs HostListener code"/>
+
+The code examples below illustrate the distinctions between Angular's native `@HostListener` decorator and the `zonelessHostListener` function provided by the `ng-badger` library. These two approaches serve the common purpose of handling events on an Angular component's host element, yet they differ in syntax, capabilities, and the underlying philosophy of event management.
+
+```typescript
+@Component({
+    selector: 'app-default-example',
+    standalone: true,
+    template: `
+        <div style="padding: 100px; border: 1px dashed black;">
+            <p>
+                <strong>fromEvent and runOutsideAngular</strong>
+                Open dev tools.
+                Move mouse above or click this box to trigger events
+            </p>
+        </div>
+    `
+})
+export class DefaultExampleComponent implements OnInit {
+
+    private readonly ngZone = inject(NgZone);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly elementRef = inject(ElementRef);
+
+    ngOnInit() {
+        this.ngZone.runOutsideAngular(() => {
+            merge(
+                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),
+                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),
+                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))
+            )
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(event =>
+                console.log(event)
+            );
+        });
+    }
+}
+```
+
+```typescript
+@Component({
+    selector: 'app-badger-example',
+    standalone: true,
+    imports: [],
+    template: `
+        <div style="padding: 100px; border: 1px dashed black;">
+            <p>
+                <strong>zonelessHostListener</strong>
+                Open dev tools.
+                Move mouse above or click this box to trigger events
+            </p>
+        </div>
+    `
+})
+export class BadgerExampleComponent {
+    event$ = merge(
+        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),
+        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),
+        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))
+    )
+        .pipe(takeUntilDestroyed())
+        .subscribe(event => console.log(event));
+}
+```

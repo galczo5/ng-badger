@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from "@storybook/angular";
 import {Component} from "@angular/core";
 import {AsyncPipe} from "@angular/common";
-import {zonelessHostListener} from "projects/ng-badger/src/public-api";
+import {zonelessHostListener} from "../../../../projects/ng-badger/src/public-api";
 import {map, merge} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {GithubLinkComponent} from "../../../app/github-link/github-link.component";

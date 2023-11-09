@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from "@storybook/angular";
 import {Component} from "@angular/core";
 import {AsyncPipe} from "@angular/common";
-import {hostListener} from "projects/ng-badger/src/public-api";
+import {hostListener} from "../../../../projects/ng-badger/src/public-api";
 import {map, merge} from "rxjs";
 import {GithubLinkComponent} from "../../../app/github-link/github-link.component";
 

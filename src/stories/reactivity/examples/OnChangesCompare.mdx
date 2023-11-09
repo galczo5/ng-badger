@@ -1,0 +1,71 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Reactivity / Examples / onChange real life example code"/>
+
+The code examples below elucidate the distinctions between Angular's conventional `OnChanges` lifecycle hook and the `onChanges` function introduced by the `ng-badger` library. Both mechanisms are designed for managing changes to input properties within Angular components, yet they diverge in syntax, functionalities, and the overall approach to reacting to property alterations.
+
+```typescript
+@Component({
+    selector: 'app-default-user-details',
+    template: `
+        <div *ngIf="userDetails">
+            <strong>{{ userDetails.email }}</strong>
+            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>
+        </div>
+    `,
+    imports: [
+        NgIf,
+        AsyncPipe
+    ],
+    standalone: true
+})
+export class DefaultUserDetailsComponent implements OnChanges {
+
+    @Input({required: true})
+    selectedEmail?: string;
+
+    userDetails: User | undefined;
+
+    private readonly httpUsersDataService = inject(HttpUsersDataService);
+    private readonly destroyRef = inject(DestroyRef);
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['selectedEmail']) {
+            this.httpUsersDataService.getUserByEmail(this.selectedEmail)
+                .pipe(
+                    takeUntilDestroyed(this.destroyRef)
+                )
+                .subscribe(userDetails => {
+                    this.userDetails = userDetails;
+                });
+        }
+    }
+}
+```
+
+```typescript
+@Component({
+    selector: 'app-badger-user-details',
+    template: `
+        <div *ngIf="userDetails$ | async as userDetails">
+            <strong>{{ userDetails.email }}</strong>
+            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>
+        </div>
+    `,
+    imports: [
+        NgIf,
+        AsyncPipe
+    ],
+    standalone: true
+})
+export class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {
+
+    @Input({required: true})
+    selectedEmail?: string;
+
+    userDetails$ = onChanges(this, 'selectedEmail')
+        .pipe(
+            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))
+        );
+}
+```

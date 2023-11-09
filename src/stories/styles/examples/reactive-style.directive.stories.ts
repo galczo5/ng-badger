@@ -1,9 +1,8 @@
 import type {Meta, StoryObj} from "@storybook/angular";
-import type { NgZone} from "@angular/core";
-import {Component, ViewEncapsulation} from "@angular/core";
+import {Component, NgZone, ViewEncapsulation} from "@angular/core";
 import {ExampleTextComponent} from "../../../app/example-text/example-text/example-text.component";
 import {ReactiveStyleDirective} from "../../../../projects/ng-badger/src/lib/directives";
-import type { Observable} from "rxjs";
+import type {Observable} from "rxjs";
 import {interval, map} from "rxjs";
 import type {StylesProperty} from "../../../../projects/ng-badger/src/lib/types";
 import {GithubLinkComponent} from "../../../app/github-link/github-link.component";

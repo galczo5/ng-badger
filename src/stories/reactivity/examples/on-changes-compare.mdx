@@ -4,6 +4,8 @@ import {Meta} from "@storybook/blocks";
 
 The code examples below elucidate the distinctions between Angular's conventional `OnChanges` lifecycle hook and the `onChanges` function introduced by the `ng-badger` library. Both mechanisms are designed for managing changes to input properties within Angular components, yet they diverge in syntax, functionalities, and the overall approach to reacting to property alterations.
 
+### Native
+
 ```typescript
 @Component({
     selector: 'app-default-user-details',
@@ -42,6 +44,8 @@ export class DefaultUserDetailsComponent implements OnChanges {
     }
 }
 ```
+
+### Badger
 
 ```typescript
 @Component({

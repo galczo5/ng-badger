@@ -1,0 +1,96 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Styles / Examples / hostClasses with onChanges code"/>
+
+The code examples below serve to illustrate the differences between using Angular's native reactive hooks and leveraging the `hostClasses` function provided by the `ng-badger` library. Both approaches focus on enhancing reactivity within Angular components, particularly in managing CSS classes dynamically. However, they diverge in syntax, capabilities, and the philosophy of incorporating reactivity into the component architecture.
+
+### Native
+
+```typescript
+@Component({
+    selector: 'app-default-example',
+    standalone: true,
+    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],
+    template: `
+        <app-example-text/>
+    `,
+    encapsulation: ViewEncapsulation.None,
+    styles: [`
+        .bg-red {
+            display: block;
+            background: red;
+        }
+
+        .disabled {
+            display: block;
+            color: gray;
+        }
+    `]
+})
+export class DefaultExampleComponent implements OnChanges {
+
+    @Input({required: true})
+    active = false;
+
+    @Input({required: true})
+    disabled = false;
+
+    @HostBinding('class.bg-red')
+    bgRed = false;
+
+    @HostBinding('class.disabled')
+    cssDisabled = false;
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['active']) {
+            this.bgRed = this.active;
+        }
+
+        if (changes['disabled']) {
+            this.cssDisabled = this.disabled;
+        }
+    }
+}
+```
+
+### Badger
+
+```typescript
+@Component({
+    selector: 'app-badger-example',
+    standalone: true,
+    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],
+    template: `
+        <app-example-text/>
+    `,
+    encapsulation: ViewEncapsulation.None,
+    styles: [`
+        .bg-red {
+            display: block;
+            background: red;
+        }
+
+        .disabled {
+            display: block;
+            color: gray;
+        }
+    `]
+})
+export class BadgerExampleComponent extends ReactiveLifecycleDirective {
+
+    @Input({required: true})
+    active = false;
+
+    @Input({required: true})
+    disabled = false;
+
+    hostClasses = hostClasses();
+
+    changes$ = onChanges(this, 'active', 'disabled')
+        .pipe(takeUntilDestroyed())
+        .subscribe(() => {
+            this.active ? this.hostClasses.add('bg-red') : this.hostClasses.remove('bg-red');
+            this.disabled ? this.hostClasses.add('disabled') : this.hostClasses.remove('disabled');
+        });
+}
+```

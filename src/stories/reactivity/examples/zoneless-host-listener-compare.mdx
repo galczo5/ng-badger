@@ -4,6 +4,8 @@ import {Meta} from "@storybook/blocks";
 
 The code examples below illustrate the distinctions between Angular's native `@HostListener` decorator and the `zonelessHostListener` function provided by the `ng-badger` library. These two approaches serve the common purpose of handling events on an Angular component's host element, yet they differ in syntax, capabilities, and the underlying philosophy of event management.
 
+### Native
+
 ```typescript
 @Component({
     selector: 'app-default-example',
@@ -39,6 +41,8 @@ export class DefaultExampleComponent implements OnInit {
     }
 }
 ```
+
+### Badger
 
 ```typescript
 @Component({

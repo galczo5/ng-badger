@@ -4,7 +4,7 @@
     "injectables": [
         {
             "name": "HttpUsersDataService",
-            "id": "injectable-HttpUsersDataService-93bee46fc0d29f23036b5e64786de1582f6846c9872b66dd798e8965eca9eb882489de1e99b9459ee4733b51f15910a96f30e15cf2261df70a95a2e0d9c01fb6",
+            "id": "injectable-HttpUsersDataService-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3",
             "file": "src/stories/reactivity/examples/on-change.stories.ts",
             "properties": [
                 {
@@ -15,7 +15,7 @@
                     "type": "Array<User>",
                     "optional": false,
                     "description": "",
-                    "line": 18,
+                    "line": 20,
                     "modifierKind": [
                         121,
                         146
@@ -37,7 +37,7 @@
                     "optional": false,
                     "returnType": "Observable<User | undefined>",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 66,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -59,7 +59,7 @@
                     "optional": false,
                     "returnType": "Observable<Array<string>>",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 62,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -68,7 +68,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, inject, Injectable, Input, OnChanges, SimpleChanges} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport {Observable, of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "type": "injectable"
         }
     ],
@@ -167,7 +167,7 @@
         },
         {
             "name": "BadgerExampleComponent",
-            "id": "component-BadgerExampleComponent-96747ae5e7fc1c8de07c1faed4ccd275f4693c85c63206ca67c112cfe6871a7b5950cb7990ca8b0adc73207d3e107ed2ef63bccacbe6709e05d42d16acd9e35e-1",
+            "id": "component-BadgerExampleComponent-86168dfe3f963d2da8d20a436fd63c92da0db463aad1fccf18d4a0d1f4da149720080bb176502769114d07483dda00e80ed0b5ec7711f63d86e007892de6e17a-1",
             "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -192,7 +192,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 56
+                    "line": 57
                 }
             ],
             "methodsClass": [],
@@ -205,7 +205,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone, OnInit} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnInit} from \"@angular/core\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -215,7 +215,7 @@
         },
         {
             "name": "BadgerUserDetailsComponent",
-            "id": "component-BadgerUserDetailsComponent-93bee46fc0d29f23036b5e64786de1582f6846c9872b66dd798e8965eca9eb882489de1e99b9459ee4733b51f15910a96f30e15cf2261df70a95a2e0d9c01fb6",
+            "id": "component-BadgerUserDetailsComponent-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3",
             "file": "src/stories/reactivity/examples/on-change.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -236,7 +236,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "optional": false,
-                    "line": 87,
+                    "line": 89,
                     "type": "string",
                     "decorators": []
                 }
@@ -251,7 +251,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 89
+                    "line": 91
                 }
             ],
             "methodsClass": [],
@@ -272,7 +272,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, inject, Injectable, Input, OnChanges, SimpleChanges} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport {Observable, of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -457,7 +457,7 @@
         },
         {
             "name": "DefaultExampleComponent",
-            "id": "component-DefaultExampleComponent-96747ae5e7fc1c8de07c1faed4ccd275f4693c85c63206ca67c112cfe6871a7b5950cb7990ca8b0adc73207d3e107ed2ef63bccacbe6709e05d42d16acd9e35e-1",
+            "id": "component-DefaultExampleComponent-86168dfe3f963d2da8d20a436fd63c92da0db463aad1fccf18d4a0d1f4da149720080bb176502769114d07483dda00e80ed0b5ec7711f63d86e007892de6e17a-1",
             "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -482,7 +482,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 23,
+                    "line": 24,
                     "modifierKind": [
                         121,
                         146
@@ -496,7 +496,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 24,
+                    "line": 25,
                     "modifierKind": [
                         121,
                         146
@@ -510,7 +510,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 22,
+                    "line": 23,
                     "modifierKind": [
                         121,
                         146
@@ -524,7 +524,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 27,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -538,7 +538,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone, OnInit} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnInit} from \"@angular/core\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -551,7 +551,7 @@
         },
         {
             "name": "DefaultUserDetailsComponent",
-            "id": "component-DefaultUserDetailsComponent-93bee46fc0d29f23036b5e64786de1582f6846c9872b66dd798e8965eca9eb882489de1e99b9459ee4733b51f15910a96f30e15cf2261df70a95a2e0d9c01fb6",
+            "id": "component-DefaultUserDetailsComponent-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3",
             "file": "src/stories/reactivity/examples/on-change.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -572,7 +572,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "optional": false,
-                    "line": 112,
+                    "line": 114,
                     "type": "string",
                     "decorators": []
                 }
@@ -587,7 +587,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 117,
+                    "line": 119,
                     "modifierKind": [
                         121,
                         146
@@ -601,7 +601,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 116,
+                    "line": 118,
                     "modifierKind": [
                         121,
                         146
@@ -614,7 +614,7 @@
                     "type": "User | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 114
+                    "line": 116
                 }
             ],
             "methodsClass": [
@@ -631,7 +631,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 121,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -664,7 +664,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, inject, Injectable, Input, OnChanges, SimpleChanges} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport {Observable, of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -728,7 +728,7 @@
         },
         {
             "name": "ExampleComponent",
-            "id": "component-ExampleComponent-93bee46fc0d29f23036b5e64786de1582f6846c9872b66dd798e8965eca9eb882489de1e99b9459ee4733b51f15910a96f30e15cf2261df70a95a2e0d9c01fb6-1",
+            "id": "component-ExampleComponent-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3-1",
             "file": "src/stories/reactivity/examples/on-change.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -753,7 +753,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 167
+                    "line": 169
                 },
                 {
                     "name": "userData$",
@@ -763,7 +763,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 164
+                    "line": 166
                 }
             ],
             "methodsClass": [],
@@ -796,7 +796,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, inject, Injectable, Input, OnChanges, SimpleChanges} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport {Observable, of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -863,8 +863,8 @@
         },
         {
             "name": "ExampleComponent",
-            "id": "component-ExampleComponent-a556d0ceaeb2d53092a6b08a67b787013563d7801416dd83080adace26456f0c809520e74be2ff11c2509a77f92153edbc6f34f82e5dcb666c6a44efa84bb0db-3",
-            "file": "src/stories/styles/examples/host-classes.stories.ts",
+            "id": "component-ExampleComponent-7c9706475d490caab9d949f61badc76e0bda8acda68250acb4f77e50ab7045a01da5019773549ae7754fed4c7e9668535495bfc299a78d4ab9ebb78b27e9a3de-3",
+            "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
             ],
@@ -875,15 +875,37 @@
             "selector": "app-example",
             "styleUrls": [],
             "styles": [
-                "\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  "
+                "\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    "
             ],
             "template": "<app-example-text/>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "required": true,
+                    "name": "active",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "optional": false,
+                    "line": 30,
+                    "type": "boolean",
+                    "decorators": []
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [
+                {
+                    "name": "changes$",
+                    "defaultValue": "onChanges(this, 'active')\n        .pipe(takeUntilDestroyed())\n        .subscribe(() => {\n            this.hostClasses.toggle('bg-red')\n        })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34
+                },
                 {
                     "name": "hostClasses",
                     "defaultValue": "hostClasses()",
@@ -892,7 +914,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 32
                 }
             ],
             "methodsClass": [],
@@ -918,17 +940,83 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport { hostClasses } from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  `]\n})\nexport class ExampleComponent {\n  hostClasses = hostClasses();\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>hostClasses.set('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.add('text-blue')\">\n        <code>hostClasses.add('text-blue')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.get())\">\n        <code>console.log(hostClasses.get())</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n        <code>console.log(hostClasses.contains('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.remove('bg-red')\">\n        <code>hostClasses.remove('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.removeAll()\">\n        <code>hostClasses.removeAll()</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n        <code>console.log(hostClasses.swap('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.toggle('bg-red')\">\n        <code>hostClasses.toggle('bg-red')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.toString())\">\n        <code>console.log(hostClasses.toString())</code>\n      </button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, Input, ViewEncapsulation} from \"@angular/core\";\nimport {AsyncPipe, CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {interval, map} from \"rxjs\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    `]\n})\nexport class ExampleComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    active: boolean = false;\n\n    hostClasses = hostClasses();\n\n    changes$ = onChanges(this, 'active')\n        .pipe(takeUntilDestroyed())\n        .subscribe(() => {\n            this.hostClasses.toggle('bg-red')\n        });\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent, AsyncPipe],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example [active]=\"!!(active$ | async)\" #example/>\n    `\n})\nexport class ExampleWrapperComponent extends ReactiveLifecycleDirective {\n    active$ = interval(1000)\n        .pipe(map(i => i % 2));\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses with onChanges',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  \n",
+            "stylesData": "\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    \n",
+            "extends": "ReactiveLifecycleDirective",
             "isDuplicate": true,
             "duplicateId": 3,
             "duplicateName": "ExampleComponent-3"
         },
         {
             "name": "ExampleComponent",
-            "id": "component-ExampleComponent-03ce2e84511dbfa26b563adc201d33b2d37160ba162a1c8a09aba7d807543ffefe847e7ff4c368cc450560ac3ebad4dfe20485bbbfa054233a9cf519e2b21138-4",
+            "id": "component-ExampleComponent-18b00d744a84ac21f885199fd6d83d75f077621f4c0487bcb4ad186acd622546c1595f776bff3d3c570f8d3613f313d0f4ddc9f5ed5f22618bff7c0a8f16d2d2-4",
+            "file": "src/stories/styles/examples/host-classes.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [
+                "\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    "
+            ],
+            "template": "<app-example-text/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "hostClasses",
+                    "defaultValue": "hostClasses()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostClasses = hostClasses();\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostClasses.set('bg-red')\">\n                <code>hostClasses.set('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.add('text-blue')\">\n                <code>hostClasses.add('text-blue')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.get())\">\n                <code>console.log(hostClasses.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n                <code>console.log(hostClasses.contains('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.remove('bg-red')\">\n                <code>hostClasses.remove('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.removeAll()\">\n                <code>hostClasses.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n                <code>console.log(hostClasses.swap('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.toggle('bg-red')\">\n                <code>hostClasses.toggle('bg-red')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.toString())\">\n                <code>console.log(hostClasses.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    \n",
+            "isDuplicate": true,
+            "duplicateId": 4,
+            "duplicateName": "ExampleComponent-4"
+        },
+        {
+            "name": "ExampleComponent",
+            "id": "component-ExampleComponent-4557d2dad7a6d6d440497a36b76593da930009c559bbf37c6876c496d5eab60a9acce01ba1760b31ea5ef068484fd045c1475c246d43441fdabd8d84cbc695ba-5",
             "file": "src/stories/styles/examples/host-styles.stories.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -940,7 +1028,7 @@
             "selector": "app-example",
             "styleUrls": [],
             "styles": [
-                "\n    app-example {\n      display: block;\n    }\n  "
+                "\n        app-example {\n            display: block;\n        }\n    "
             ],
             "template": "<app-example-text/>\n",
             "templateUrl": [],
@@ -983,13 +1071,13 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example {\n      display: block;\n    }\n  `]\n})\nexport class ExampleComponent {\n  hostStyles = hostStyles({});\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n      <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n      <app-example #example/>\n      <app-button-group>\n          <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n              <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n          </button>\n          <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n              <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.get())\">\n              <code>console.log(hostStyles.get())</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n              <code>console.log(hostStyles.contains('background'))</code>\n          </button>\n          <button (click)=\"example.hostStyles.remove('background')\">\n              <code>hostStyles.remove('background')</code>\n          </button>\n          <button (click)=\"example.hostStyles.removeAll()\">\n              <code>hostStyles.removeAll()</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n              <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.toString())\">\n              <code>console.log(hostStyles.toString())</code>\n          </button>\n      </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostStyles',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostStyles = hostStyles({});\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n                <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n            </button>\n            <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n                <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.get())\">\n                <code>console.log(hostStyles.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n                <code>console.log(hostStyles.contains('background'))</code>\n            </button>\n            <button (click)=\"example.hostStyles.remove('background')\">\n                <code>hostStyles.remove('background')</code>\n            </button>\n            <button (click)=\"example.hostStyles.removeAll()\">\n                <code>hostStyles.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n                <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.toString())\">\n                <code>console.log(hostStyles.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostStyles',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n    app-example {\n      display: block;\n    }\n  \n",
+            "stylesData": "\n        app-example {\n            display: block;\n        }\n    \n",
             "isDuplicate": true,
-            "duplicateId": 4,
-            "duplicateName": "ExampleComponent-4"
+            "duplicateId": 5,
+            "duplicateName": "ExampleComponent-5"
         },
         {
             "name": "ExampleTextComponent",
@@ -1032,7 +1120,70 @@
         },
         {
             "name": "ExampleWrapperComponent",
-            "id": "component-ExampleWrapperComponent-a556d0ceaeb2d53092a6b08a67b787013563d7801416dd83080adace26456f0c809520e74be2ff11c2509a77f92153edbc6f34f82e5dcb666c6a44efa84bb0db",
+            "id": "component-ExampleWrapperComponent-7c9706475d490caab9d949f61badc76e0bda8acda68250acb4f77e50ab7045a01da5019773549ae7754fed4c7e9668535495bfc299a78d4ab9ebb78b27e9a3de",
+            "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example-wrapper",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n<app-example [active]=\"!!(active$ | async)\" #example/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "active$",
+                    "defaultValue": "interval(1000)\n        .pipe(map(i => i % 2))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 51
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "ExampleComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, Input, ViewEncapsulation} from \"@angular/core\";\nimport {AsyncPipe, CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {interval, map} from \"rxjs\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    `]\n})\nexport class ExampleComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    active: boolean = false;\n\n    hostClasses = hostClasses();\n\n    changes$ = onChanges(this, 'active')\n        .pipe(takeUntilDestroyed())\n        .subscribe(() => {\n            this.hostClasses.toggle('bg-red')\n        });\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent, AsyncPipe],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example [active]=\"!!(active$ | async)\" #example/>\n    `\n})\nexport class ExampleWrapperComponent extends ReactiveLifecycleDirective {\n    active$ = interval(1000)\n        .pipe(map(i => i % 2));\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses with onChanges',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": "ReactiveLifecycleDirective"
+        },
+        {
+            "name": "ExampleWrapperComponent",
+            "id": "component-ExampleWrapperComponent-18b00d744a84ac21f885199fd6d83d75f077621f4c0487bcb4ad186acd622546c1595f776bff3d3c570f8d3613f313d0f4ddc9f5ed5f22618bff7c0a8f16d2d2-1",
             "file": "src/stories/styles/examples/host-classes.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1042,7 +1193,7 @@
             "selector": "app-example-wrapper",
             "styleUrls": [],
             "styles": [],
-            "template": "<app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n<app-example #example/>\n<app-button-group>\n  <button (click)=\"example.hostClasses.set('bg-red')\">\n    <code>hostClasses.set('bg-red')</code>\n  </button>\n  <button (click)=\"example.hostClasses.add('text-blue')\">\n    <code>hostClasses.add('text-blue')</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.get())\">\n    <code>console.log(hostClasses.get())</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n    <code>console.log(hostClasses.contains('bg-red'))</code>\n  </button>\n  <button (click)=\"example.hostClasses.remove('bg-red')\">\n    <code>hostClasses.remove('bg-red')</code>\n  </button>\n  <button (click)=\"example.hostClasses.removeAll()\">\n    <code>hostClasses.removeAll()</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n    <code>console.log(hostClasses.swap('bg-red'))</code>\n  </button>\n  <button (click)=\"example.hostClasses.toggle('bg-red')\">\n    <code>hostClasses.toggle('bg-red')</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.toString())\">\n    <code>console.log(hostClasses.toString())</code>\n  </button>\n</app-button-group>\n",
+            "template": "<app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n<app-example #example/>\n<app-button-group>\n    <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>hostClasses.set('bg-red')</code>\n    </button>\n    <button (click)=\"example.hostClasses.add('text-blue')\">\n        <code>hostClasses.add('text-blue')</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.get())\">\n        <code>console.log(hostClasses.get())</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n        <code>console.log(hostClasses.contains('bg-red'))</code>\n    </button>\n    <button (click)=\"example.hostClasses.remove('bg-red')\">\n        <code>hostClasses.remove('bg-red')</code>\n    </button>\n    <button (click)=\"example.hostClasses.removeAll()\">\n        <code>hostClasses.removeAll()</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n        <code>console.log(hostClasses.swap('bg-red'))</code>\n    </button>\n    <button (click)=\"example.hostClasses.toggle('bg-red')\">\n        <code>hostClasses.toggle('bg-red')</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.toString())\">\n        <code>console.log(hostClasses.toString())</code>\n    </button>\n</app-button-group>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -1057,7 +1208,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 66
+                    "line": 74
                 }
             ],
             "methodsClass": [],
@@ -1083,14 +1234,17 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport { hostClasses } from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  `]\n})\nexport class ExampleComponent {\n  hostClasses = hostClasses();\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>hostClasses.set('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.add('text-blue')\">\n        <code>hostClasses.add('text-blue')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.get())\">\n        <code>console.log(hostClasses.get())</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n        <code>console.log(hostClasses.contains('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.remove('bg-red')\">\n        <code>hostClasses.remove('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.removeAll()\">\n        <code>hostClasses.removeAll()</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n        <code>console.log(hostClasses.swap('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.toggle('bg-red')\">\n        <code>hostClasses.toggle('bg-red')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.toString())\">\n        <code>console.log(hostClasses.toString())</code>\n      </button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostClasses = hostClasses();\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostClasses.set('bg-red')\">\n                <code>hostClasses.set('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.add('text-blue')\">\n                <code>hostClasses.add('text-blue')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.get())\">\n                <code>console.log(hostClasses.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n                <code>console.log(hostClasses.contains('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.remove('bg-red')\">\n                <code>hostClasses.remove('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.removeAll()\">\n                <code>hostClasses.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n                <code>console.log(hostClasses.swap('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.toggle('bg-red')\">\n                <code>hostClasses.toggle('bg-red')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.toString())\">\n                <code>console.log(hostClasses.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": ""
+            "stylesData": "",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "ExampleWrapperComponent-1"
         },
         {
             "name": "ExampleWrapperComponent",
-            "id": "component-ExampleWrapperComponent-03ce2e84511dbfa26b563adc201d33b2d37160ba162a1c8a09aba7d807543ffefe847e7ff4c368cc450560ac3ebad4dfe20485bbbfa054233a9cf519e2b21138-1",
+            "id": "component-ExampleWrapperComponent-4557d2dad7a6d6d440497a36b76593da930009c559bbf37c6876c496d5eab60a9acce01ba1760b31ea5ef068484fd045c1475c246d43441fdabd8d84cbc695ba-2",
             "file": "src/stories/styles/examples/host-styles.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1141,13 +1295,13 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example {\n      display: block;\n    }\n  `]\n})\nexport class ExampleComponent {\n  hostStyles = hostStyles({});\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n      <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n      <app-example #example/>\n      <app-button-group>\n          <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n              <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n          </button>\n          <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n              <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.get())\">\n              <code>console.log(hostStyles.get())</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n              <code>console.log(hostStyles.contains('background'))</code>\n          </button>\n          <button (click)=\"example.hostStyles.remove('background')\">\n              <code>hostStyles.remove('background')</code>\n          </button>\n          <button (click)=\"example.hostStyles.removeAll()\">\n              <code>hostStyles.removeAll()</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n              <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n          </button>\n          <button (click)=\"console.log(example.hostStyles.toString())\">\n              <code>console.log(hostStyles.toString())</code>\n          </button>\n      </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostStyles',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostStyles = hostStyles({});\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n                <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n            </button>\n            <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n                <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.get())\">\n                <code>console.log(hostStyles.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n                <code>console.log(hostStyles.contains('background'))</code>\n            </button>\n            <button (click)=\"example.hostStyles.remove('background')\">\n                <code>hostStyles.remove('background')</code>\n            </button>\n            <button (click)=\"example.hostStyles.removeAll()\">\n                <code>hostStyles.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n                <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.toString())\">\n                <code>console.log(hostStyles.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostStyles',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "ExampleWrapperComponent-1"
+            "duplicateId": 2,
+            "duplicateName": "ExampleWrapperComponent-2"
         },
         {
             "name": "GithubLinkComponent",
@@ -1313,7 +1467,7 @@
         },
         {
             "name": "WrapperComponent",
-            "id": "component-WrapperComponent-96747ae5e7fc1c8de07c1faed4ccd275f4693c85c63206ca67c112cfe6871a7b5950cb7990ca8b0adc73207d3e107ed2ef63bccacbe6709e05d42d16acd9e35e-1",
+            "id": "component-WrapperComponent-86168dfe3f963d2da8d20a436fd63c92da0db463aad1fccf18d4a0d1f4da149720080bb176502769114d07483dda00e80ed0b5ec7711f63d86e007892de6e17a-1",
             "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1353,7 +1507,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone, OnInit} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnInit} from \"@angular/core\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1363,7 +1517,7 @@
         },
         {
             "name": "ZonelessExampleComponent",
-            "id": "component-ZonelessExampleComponent-aa8ef925c88eb07de675e4d36608119800f3650f6f263f2e3e3f7cf0056c1a42f2f0248abe9699b9fc3c990835e984e10433fd2ac389491fbac401f6951aef43",
+            "id": "component-ZonelessExampleComponent-cafa239cb0fc7c1ed7e0f72610cd4ccbc6b4f24235bcc3e96a944257cb9cb758389e1380526236affc2db8bf198f7255232b2e22f88ac4a3324a935a9f2afed3",
             "file": "src/stories/styles/examples/reactive-class.directive.stories.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -1391,7 +1545,7 @@
                     "type": "Observable<string>",
                     "optional": false,
                     "description": "",
-                    "line": 35
+                    "line": 36
                 }
             ],
             "methodsClass": [],
@@ -1417,7 +1571,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, NgZone, ViewEncapsulation} from \"@angular/core\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {ReactiveClassDirective} from \"../../../../projects/ng-badger/src/lib/directives\";\nimport type {Observable} from \"rxjs\";\nimport {interval, map} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/reactive-class.directive.stories.ts\"/>\n        <app-example-text [reactiveClass]=\"classes$\"/>\n    `,\n    imports: [\n        ExampleTextComponent,\n        ReactiveClassDirective,\n        GithubLinkComponent\n    ],\n    encapsulation: ViewEncapsulation.None,\n    standalone: true,\n    styles: [`\n        .red {\n            display: block;\n            background: red;\n        }\n\n        .blue {\n            display: block;\n            background: blue;\n        }\n    `]\n})\nexport class ZonelessExampleComponent {\n    classes$!: Observable<string>;\n\n    constructor(ngZone: NgZone) {\n        ngZone.runOutsideAngular(() => {\n            this.classes$ = interval(1000)\n                .pipe(map(i => i % 2 ? 'red' : 'blue'))\n        });\n    }\n}\n\nexport default {\n    title: 'Styles/Examples/ReactiveClassDirective',\n    component: ZonelessExampleComponent\n} as Meta<ZonelessExampleComponent>;\n\n\nexport const Example: StoryObj<ZonelessExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type {NgZone} from \"@angular/core\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {ReactiveClassDirective} from \"../../../../projects/ng-badger/src/lib/directives\";\nimport type {Observable} from \"rxjs\";\nimport {interval, map} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/reactive-class.directive.stories.ts\"/>\n        <app-example-text [reactiveClass]=\"classes$\"/>\n    `,\n    imports: [\n        ExampleTextComponent,\n        ReactiveClassDirective,\n        GithubLinkComponent\n    ],\n    encapsulation: ViewEncapsulation.None,\n    standalone: true,\n    styles: [`\n        .red {\n            display: block;\n            background: red;\n        }\n\n        .blue {\n            display: block;\n            background: blue;\n        }\n    `]\n})\nexport class ZonelessExampleComponent {\n    classes$!: Observable<string>;\n\n    constructor(ngZone: NgZone) {\n        ngZone.runOutsideAngular(() => {\n            this.classes$ = interval(1000)\n                .pipe(map(i => i % 2 ? 'red' : 'blue'))\n        });\n    }\n}\n\nexport default {\n    title: 'Styles/Examples/ReactiveClassDirective',\n    component: ZonelessExampleComponent\n} as Meta<ZonelessExampleComponent>;\n\n\nexport const Example: StoryObj<ZonelessExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n        .red {\n            display: block;\n            background: red;\n        }\n\n        .blue {\n            display: block;\n            background: blue;\n        }\n    \n",
@@ -1434,7 +1588,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 35,
+                "line": 36,
                 "jsdoctags": [
                     {
                         "name": "ngZone",
@@ -1450,7 +1604,7 @@
         },
         {
             "name": "ZonelessExampleComponent",
-            "id": "component-ZonelessExampleComponent-881d1dc9225e7417499ceeccd7476623e86940d4e9dce6936e2833136003657bbcb0e9a30c9591de8abc7231752fb17769d7cf217850835c97a94345a330765f-1",
+            "id": "component-ZonelessExampleComponent-2f869573e1eebf187efab3135c627bf5b4d77cf3ffa05715049c2b93ab0a67cc7ae98a5c0ee615bf00c2236db753ca39a139a7b3c793779c88ed8376e5da1b32-1",
             "file": "src/stories/styles/examples/reactive-style.directive.stories.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -1476,7 +1630,7 @@
                     "type": "Observable<StylesProperty>",
                     "optional": false,
                     "description": "",
-                    "line": 25
+                    "line": 26
                 }
             ],
             "methodsClass": [],
@@ -1502,7 +1656,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, NgZone, ViewEncapsulation} from \"@angular/core\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {ReactiveStyleDirective} from \"../../../../projects/ng-badger/src/lib/directives\";\nimport type {Observable} from \"rxjs\";\nimport {interval, map} from \"rxjs\";\nimport type {StylesProperty} from \"../../../../projects/ng-badger/src/lib/types\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/reactive-style.directive.stories.ts\"/>\n        <app-example-text [reactiveStyle]=\"classes$\"/>\n    `,\n    imports: [\n        ExampleTextComponent,\n        ReactiveStyleDirective,\n        GithubLinkComponent\n    ],\n    encapsulation: ViewEncapsulation.None,\n    standalone: true\n})\nexport class ZonelessExampleComponent {\n    classes$!: Observable<StylesProperty>;\n\n    constructor(ngZone: NgZone) {\n        ngZone.runOutsideAngular(() => {\n            this.classes$ = interval(1000)\n                .pipe(\n                    map(i => i % 2 ? {color: 'red'} : {color: 'blue'})\n                )\n        });\n    }\n}\n\nexport default {\n    title: 'Styles/Examples/ReactiveStyleDirective',\n    component: ZonelessExampleComponent\n} as Meta<ZonelessExampleComponent>;\n\n\nexport const Example: StoryObj<ZonelessExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type {NgZone} from \"@angular/core\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {ReactiveStyleDirective} from \"../../../../projects/ng-badger/src/lib/directives\";\nimport type {Observable} from \"rxjs\";\nimport {interval, map} from \"rxjs\";\nimport type {StylesProperty} from \"../../../../projects/ng-badger/src/lib/types\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/reactive-style.directive.stories.ts\"/>\n        <app-example-text [reactiveStyle]=\"classes$\"/>\n    `,\n    imports: [\n        ExampleTextComponent,\n        ReactiveStyleDirective,\n        GithubLinkComponent\n    ],\n    encapsulation: ViewEncapsulation.None,\n    standalone: true\n})\nexport class ZonelessExampleComponent {\n    classes$!: Observable<StylesProperty>;\n\n    constructor(ngZone: NgZone) {\n        ngZone.runOutsideAngular(() => {\n            this.classes$ = interval(1000)\n                .pipe(\n                    map(i => i % 2 ? {color: 'red'} : {color: 'blue'})\n                )\n        });\n    }\n}\n\nexport default {\n    title: 'Styles/Examples/ReactiveStyleDirective',\n    component: ZonelessExampleComponent\n} as Meta<ZonelessExampleComponent>;\n\n\nexport const Example: StoryObj<ZonelessExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1519,7 +1673,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 25,
+                "line": 26,
                 "jsdoctags": [
                     {
                         "name": "ngZone",
@@ -1633,6 +1787,16 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StoryObj<ExampleComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<ExampleWrapperComponent>",
                 "defaultValue": "{}"
             },
             {
@@ -1759,6 +1923,18 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "StoryObj<ExampleComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/styles/examples/host-classes-real-life.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<ExampleWrapperComponent>",
                     "defaultValue": "{}"
                 }
             ],
@@ -2051,6 +2227,34 @@
             },
             {
                 "filePath": "src/stories/reactivity/examples/zoneless-host-listener.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleWrapperComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes-real-life.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

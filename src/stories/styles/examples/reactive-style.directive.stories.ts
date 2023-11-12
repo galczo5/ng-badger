@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from "@storybook/angular";
-import type { NgZone} from "@angular/core";
+import type {NgZone} from "@angular/core";
 import {Component, ViewEncapsulation} from "@angular/core";
 import {ExampleTextComponent} from "../../../app/example-text/example-text/example-text.component";
 import {ReactiveStyleDirective} from "../../../../projects/ng-badger/src/lib/directives";

@@ -1,0 +1,69 @@
+import {Meta} from "@storybook/blocks";
+
+<Meta title="Reactivity / Examples / hostListener vs HostListener code"/>
+
+The code examples below illustrate the distinctions between Angular's native `@HostListener` decorator and the `hostListener` function provided by the `ng-badger` library. These two approaches serve the common purpose of handling events on an Angular component's host element, yet they differ in syntax, capabilities, and the underlying philosophy of event management.
+
+### Native
+
+```typescript
+@Component({
+    selector: 'app-default-example',
+    standalone: true,
+    template: `
+        <div style="padding: 100px; border: 1px dashed black;">
+            <p>
+                <strong>@HostListener() example</strong>
+                Move mouse above or click this box to trigger events
+            </p>
+            <strong>{{ event }}</strong>
+        </div>
+    `
+})
+export class DefaultExampleComponent {
+    event?: string;
+
+    @HostListener('click')
+    onClick() {
+        this.event = 'Mouse Click';
+    }
+
+    @HostListener('mouseenter')
+    onEnter() {
+        this.event = 'Mouse Enter';
+    }
+
+    @HostListener('mouseleave')
+    onLeave() {
+        this.event = 'Mouse Leave';
+    }
+}
+```
+
+### Badger
+
+```typescript
+@Component({
+    selector: 'app-badger-example',
+    standalone: true,
+    imports: [
+        AsyncPipe
+    ],
+    template: `
+        <div style="padding: 100px; border: 1px dashed black;">
+            <p>
+                <strong>hostListener() example</strong>
+                Move mouse above or click this box to trigger events
+            </p>
+            <strong>{{ event$ | async }}</strong>
+        </div>
+    `
+})
+export class BadgerExampleComponent {
+    event$ = merge(
+        hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),
+        hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),
+        hostListener('click').pipe(map(() => 'Mouse Click'))
+    );
+}
+```

@@ -1,7 +1,77 @@
 {
     "pipes": [],
     "interfaces": [],
-    "injectables": [],
+    "injectables": [
+        {
+            "name": "HttpUsersDataService",
+            "id": "injectable-HttpUsersDataService-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3",
+            "file": "src/stories/reactivity/examples/on-change.stories.ts",
+            "properties": [
+                {
+                    "name": "data",
+                    "defaultValue": "[{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Array<User>",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        121,
+                        146
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "getUserByEmail",
+                    "args": [
+                        {
+                            "name": "email",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<User | undefined>",
+                    "typeParameters": [],
+                    "line": 66,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "email",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getUserEmailAddresses",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "Observable<Array<string>>",
+                    "typeParameters": [],
+                    "line": 62,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [],
@@ -40,6 +110,173 @@
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": ""
+        },
+        {
+            "name": "BadgerExampleComponent",
+            "id": "component-BadgerExampleComponent-1f81649912a79a793c9ab3a619305e608a4781e483185e7a02f13a8787fda5f7166a282529e72895fbff6983cba5d63969418cc43c95ce5f9f79c5663899fed4",
+            "file": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-badger-example",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div style=\"padding: 100px; border: 1px dashed black;\">\n    <p>\n        <strong>hostListener() example</strong>\n        Move mouse above or click this box to trigger events\n    </p>\n    <strong>{{ event$ | async }}</strong>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "event$",
+                    "defaultValue": "merge(\n        hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        hostListener('click').pipe(map(() => 'Mouse Click'))\n    )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 62
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, HostListener} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {hostListener} from \"../../../../projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        GithubLinkComponent\n    ],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>@HostListener() example</strong>\n                Move mouse above or click this box to trigger events\n            </p>\n            <strong>{{ event }}</strong>\n        </div>\n    `\n})\nexport class DefaultExampleComponent {\n    event?: string;\n\n    @HostListener('click')\n    onClick() {\n        this.event = 'Mouse Click';\n    }\n\n    @HostListener('mouseenter')\n    onEnter() {\n        this.event = 'Mouse Enter';\n    }\n\n    @HostListener('mouseleave')\n    onLeave() {\n        this.event = 'Mouse Leave';\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        GithubLinkComponent\n    ],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>hostListener() example</strong>\n                Move mouse above or click this box to trigger events\n            </p>\n            <strong>{{ event$ | async }}</strong>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        hostListener('click').pipe(map(() => 'Mouse Click'))\n    );\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {}\n\nexport default {\n    title: 'Reactivity/Examples/hostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": ""
+        },
+        {
+            "name": "BadgerExampleComponent",
+            "id": "component-BadgerExampleComponent-86168dfe3f963d2da8d20a436fd63c92da0db463aad1fccf18d4a0d1f4da149720080bb176502769114d07483dda00e80ed0b5ec7711f63d86e007892de6e17a-1",
+            "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-badger-example",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div style=\"padding: 100px; border: 1px dashed black;\">\n    <p>\n        <strong>zonelessHostListener</strong>\n        Open dev tools.\n        Move mouse above or click this box to trigger events\n    </p>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "event$",
+                    "defaultValue": "merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 57
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnInit} from \"@angular/core\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "BadgerExampleComponent-1"
+        },
+        {
+            "name": "BadgerUserDetailsComponent",
+            "id": "component-BadgerUserDetailsComponent-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3",
+            "file": "src/stories/reactivity/examples/on-change.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-badger-user-details",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div *ngIf=\"userDetails$ | async as userDetails\">\n    <strong>{{ userDetails.email }}</strong>\n    <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "required": true,
+                    "name": "selectedEmail",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "optional": false,
+                    "line": 89,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "userDetails$",
+                    "defaultValue": "onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 91
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "NgIf"
+                },
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": "ReactiveLifecycleDirective"
         },
         {
             "name": "ButtonGroupComponent",
@@ -83,22 +320,18 @@
             "stylesData": "\n    :host {\n      display: flex;\n      flex-wrap: wrap;\n      gap: .5rem;\n    }\n  \n"
         },
         {
-            "name": "ExampleComponent",
-            "id": "component-ExampleComponent-a556d0ceaeb2d53092a6b08a67b787013563d7801416dd83080adace26456f0c809520e74be2ff11c2509a77f92153edbc6f34f82e5dcb666c6a44efa84bb0db",
-            "file": "src/stories/styles/examples/host-classes.stories.ts",
-            "encapsulation": [
-                "ViewEncapsulation.None"
-            ],
+            "name": "DefaultExampleComponent",
+            "id": "component-DefaultExampleComponent-1f81649912a79a793c9ab3a619305e608a4781e483185e7a02f13a8787fda5f7166a282529e72895fbff6983cba5d63969418cc43c95ce5f9f79c5663899fed4",
+            "file": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+            "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-example",
+            "selector": "app-default-example",
             "styleUrls": [],
-            "styles": [
-                "\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  "
-            ],
-            "template": "<app-example-text/>\n",
+            "styles": [],
+            "template": "<div style=\"padding: 100px; border: 1px dashed black;\">\n    <p>\n        <strong>@HostListener() example</strong>\n        Move mouse above or click this box to trigger events\n    </p>\n    <strong>{{ event }}</strong>\n</div>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -106,17 +339,314 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "hostClasses",
-                    "defaultValue": "hostClasses()",
+                    "name": "event",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 26
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onClick",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 29,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'click'"
+                        }
+                    ],
+                    "modifierKind": [
+                        167
+                    ]
+                },
+                {
+                    "name": "onEnter",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 34,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mouseenter'"
+                        }
+                    ],
+                    "modifierKind": [
+                        167
+                    ]
+                },
+                {
+                    "name": "onLeave",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 39,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mouseleave'"
+                        }
+                    ],
+                    "modifierKind": [
+                        167
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [
+                {
+                    "name": "click",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 29
+                },
+                {
+                    "name": "mouseenter",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 34
+                },
+                {
+                    "name": "mouseleave",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 39
+                }
+            ],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, HostListener} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {hostListener} from \"../../../../projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        GithubLinkComponent\n    ],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>@HostListener() example</strong>\n                Move mouse above or click this box to trigger events\n            </p>\n            <strong>{{ event }}</strong>\n        </div>\n    `\n})\nexport class DefaultExampleComponent {\n    event?: string;\n\n    @HostListener('click')\n    onClick() {\n        this.event = 'Mouse Click';\n    }\n\n    @HostListener('mouseenter')\n    onEnter() {\n        this.event = 'Mouse Enter';\n    }\n\n    @HostListener('mouseleave')\n    onLeave() {\n        this.event = 'Mouse Leave';\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        GithubLinkComponent\n    ],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>hostListener() example</strong>\n                Move mouse above or click this box to trigger events\n            </p>\n            <strong>{{ event$ | async }}</strong>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        hostListener('click').pipe(map(() => 'Mouse Click'))\n    );\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {}\n\nexport default {\n    title: 'Reactivity/Examples/hostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": ""
+        },
+        {
+            "name": "DefaultExampleComponent",
+            "id": "component-DefaultExampleComponent-86168dfe3f963d2da8d20a436fd63c92da0db463aad1fccf18d4a0d1f4da149720080bb176502769114d07483dda00e80ed0b5ec7711f63d86e007892de6e17a-1",
+            "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-default-example",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div style=\"padding: 100px; border: 1px dashed black;\">\n    <p>\n        <strong>fromEvent and runOutsideAngular</strong>\n        Open dev tools.\n        Move mouse above or click this box to trigger events\n    </p>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "destroyRef",
+                    "defaultValue": "inject(DestroyRef)",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 24,
+                    "modifierKind": [
+                        121,
+                        146
+                    ]
+                },
+                {
+                    "name": "elementRef",
+                    "defaultValue": "inject(ElementRef)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        121,
+                        146
+                    ]
+                },
+                {
+                    "name": "ngZone",
+                    "defaultValue": "inject(NgZone)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        121,
+                        146
+                    ]
                 }
             ],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnInit} from \"@angular/core\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "implements": [
+                "OnInit"
+            ],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "DefaultExampleComponent-1"
+        },
+        {
+            "name": "DefaultUserDetailsComponent",
+            "id": "component-DefaultUserDetailsComponent-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3",
+            "file": "src/stories/reactivity/examples/on-change.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-default-user-details",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div *ngIf=\"userDetails\">\n    <strong>{{ userDetails.email }}</strong>\n    <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "required": true,
+                    "name": "selectedEmail",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "optional": false,
+                    "line": 114,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "destroyRef",
+                    "defaultValue": "inject(DestroyRef)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 119,
+                    "modifierKind": [
+                        121,
+                        146
+                    ]
+                },
+                {
+                    "name": "httpUsersDataService",
+                    "defaultValue": "inject(HttpUsersDataService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 118,
+                    "modifierKind": [
+                        121,
+                        146
+                    ]
+                },
+                {
+                    "name": "userDetails",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "User | undefined",
+                    "optional": false,
+                    "description": "",
+                    "line": 116
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 121,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -124,30 +654,28 @@
             "standalone": true,
             "imports": [
                 {
-                    "name": "CommonModule",
-                    "type": "module"
+                    "name": "NgIf"
                 },
                 {
-                    "name": "ExampleTextComponent",
-                    "type": "component"
-                },
-                {
-                    "name": "ButtonGroupComponent",
-                    "type": "component"
+                    "name": "AsyncPipe",
+                    "type": "pipe"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport { hostClasses } from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  `]\n})\nexport class ExampleComponent {\n  hostClasses = hostClasses();\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>hostClasses.set('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.add('text-blue')\">\n        <code>hostClasses.add('text-blue')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.get())\">\n        <code>console.log(hostClasses.get())</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n        <code>console.log(hostClasses.contains('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.remove('bg-red')\">\n        <code>hostClasses.remove('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.removeAll()\">\n        <code>hostClasses.removeAll()</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n        <code>console.log(hostClasses.swap('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.toggle('bg-red')\">\n        <code>hostClasses.toggle('bg-red')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.toString())\">\n        <code>console.log(hostClasses.toString())</code>\n      </button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  \n"
+            "stylesData": "",
+            "implements": [
+                "OnChanges"
+            ]
         },
         {
             "name": "ExampleComponent",
-            "id": "component-ExampleComponent-08989580cd9192e95d647c55154b150a3577a8ba49a766733e97c229b618fba5cda8500a05f929dca1fbf4ea426d00faa73b551b8986ea561bdea8b37079d753-1",
-            "file": "src/stories/styles/examples/host-listener.stories.ts",
+            "id": "component-ExampleComponent-e332be318f613f5502f0308b6c3ff89740d232a435296ae0baeb1348f2a2a3234532c33ad91707a4aac889184518c8cad8f29e611b3d8634064747e35dc9c296",
+            "file": "src/stories/reactivity/examples/host-listener.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -193,31 +721,24 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {hostListener} from \"projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [\n    AsyncPipe,\n    GithubLinkComponent\n  ],\n  template: `\n      <app-github-link src=\"/src/stories/styles/examples/host-listener.stories.ts\"/>\n      <div style=\"padding: 100px; border: 1px dashed black; display: flex; flex-direction: column; justify-content: center; align-items: center;\">\n          <p>\n              Move mouse above this box to trigger events\n          </p>\n          <strong>{{ event$ | async }}</strong>\n      </div>\n  `\n})\nexport class ExampleComponent {\n  event$ = merge(\n    hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n    hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n    hostListener('click').pipe(map(() => 'Mouse Click'))\n  );\n}\n\nexport default {\n  title: 'Reactivity/Examples/hostListener',\n  component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {hostListener} from \"../../../../projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [\n    AsyncPipe,\n    GithubLinkComponent\n  ],\n  template: `\n      <app-github-link src=\"/src/stories/styles/examples/host-listener.stories.ts\"/>\n      <div style=\"padding: 100px; border: 1px dashed black; display: flex; flex-direction: column; justify-content: center; align-items: center;\">\n          <p>\n              Move mouse above this box to trigger events\n          </p>\n          <strong>{{ event$ | async }}</strong>\n      </div>\n  `\n})\nexport class ExampleComponent {\n  event$ = merge(\n    hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n    hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n    hostListener('click').pipe(map(() => 'Mouse Click'))\n  );\n}\n\nexport default {\n  title: 'Reactivity/Examples/hostListener',\n  component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "",
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "ExampleComponent-1"
+            "stylesData": ""
         },
         {
             "name": "ExampleComponent",
-            "id": "component-ExampleComponent-5ccbd7d2164f488a6cadc0d755d896df00bbc15be48af8678fa5e892a241d7ec58f29917c6025e936f98983b39486f0459ac604c3a9623f2055becdf55604184-2",
-            "file": "src/stories/styles/examples/host-styles.stories.ts",
-            "encapsulation": [
-                "ViewEncapsulation.None"
-            ],
+            "id": "component-ExampleComponent-e2df4b42177c2fabeb883d062638a5c3ea10ab09893b8c3f2e787d10c33f8369465e67ce742d21aa4cc7352896ca50b14c2aa830584309d1351ade923f948dd3-1",
+            "file": "src/stories/reactivity/examples/on-change.stories.ts",
+            "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-example",
+            "selector": "app-example-wrapper",
             "styleUrls": [],
-            "styles": [
-                "\n    app-example {\n      display: block;\n    }\n  "
-            ],
-            "template": "<app-example-text/>\n",
+            "styles": [],
+            "template": "<app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n<div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n    <ul>\n        <li *ngFor=\"let email of userData$ | async\">\n            <button (click)=\"selectedEmail = email\">\n                {{ email }}\n            </button>\n        </li>\n    </ul>\n    <div>\n        <strong>Badger</strong>\n        <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n        <hr>\n        <strong>Default</strong>\n        <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n    </div>\n</div>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -225,14 +746,24 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "hostStyles",
-                    "defaultValue": "hostStyles({})",
+                    "name": "selectedEmail",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 169
+                },
+                {
+                    "name": "userData$",
+                    "defaultValue": "inject(HttpUsersDataService)\n        .getUserEmailAddresses()",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 166
                 }
             ],
             "methodsClass": [],
@@ -243,33 +774,40 @@
             "standalone": true,
             "imports": [
                 {
-                    "name": "CommonModule",
-                    "type": "module"
+                    "name": "AsyncPipe",
+                    "type": "pipe"
                 },
                 {
-                    "name": "ExampleTextComponent",
+                    "name": "BadgerUserDetailsComponent",
                     "type": "component"
                 },
                 {
-                    "name": "ButtonGroupComponent",
+                    "name": "DefaultUserDetailsComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "NgForOf"
+                },
+                {
+                    "name": "GithubLinkComponent",
                     "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example {\n      display: block;\n    }\n  `]\n})\nexport class ExampleComponent {\n  hostStyles = hostStyles({});\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n        <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n      </button>\n      <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n        <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.get())\">\n        <code>console.log(hostStyles.get())</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n        <code>console.log(hostStyles.contains('background'))</code>\n      </button>\n      <button (click)=\"example.hostStyles.remove('background')\">\n        <code>hostStyles.remove('background')</code>\n      </button>\n      <button (click)=\"example.hostStyles.removeAll()\">\n        <code>hostStyles.removeAll()</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n        <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.toString())\">\n        <code>console.log(hostStyles.toString())</code>\n      </button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostStyles',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnChanges, SimpleChanges} from \"@angular/core\";\nimport {Component, DestroyRef, inject, Injectable, Input} from \"@angular/core\";\nimport {AsyncPipe, NgForOf, NgIf} from \"@angular/common\";\nimport type {Observable} from \"rxjs\";\nimport { of, switchMap} from \"rxjs\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\ntype User = {\n    \"firstName\": string,\n    \"lastName\": string,\n    \"email\": string\n}\n\n@Injectable({providedIn: \"root\"})\nexport class HttpUsersDataService {\n\n    private readonly data: Array<User> = [{\n        \"firstName\": \"Alic\",\n        \"lastName\": \"Burchell\",\n        \"email\": \"aburchell0@123-reg.co.uk\"\n    }, {\n        \"firstName\": \"Tilly\",\n        \"lastName\": \"Neilands\",\n        \"email\": \"tneilands1@yolasite.com\"\n    }, {\n        \"firstName\": \"Zollie\",\n        \"lastName\": \"Holttom\",\n        \"email\": \"zholttom2@weibo.com\"\n    }, {\n        \"firstName\": \"Nicki\",\n        \"lastName\": \"Weathey\",\n        \"email\": \"nweathey3@nih.gov\"\n    }, {\n        \"firstName\": \"Almeria\",\n        \"lastName\": \"Silman\",\n        \"email\": \"asilman4@technorati.com\"\n    }, {\n        \"firstName\": \"Deanne\",\n        \"lastName\": \"Heister\",\n        \"email\": \"dheister5@salon.com\"\n    }, {\n        \"firstName\": \"Dannel\",\n        \"lastName\": \"Pisco\",\n        \"email\": \"dpisco6@reverbnation.com\"\n    }, {\n        \"firstName\": \"Cory\",\n        \"lastName\": \"Ferrillo\",\n        \"email\": \"cferrillo7@live.com\"\n    }, {\n        \"firstName\": \"Booth\",\n        \"lastName\": \"Atteridge\",\n        \"email\": \"batteridge8@chicagotribune.com\"\n    }, {\n        \"firstName\": \"Kellia\",\n        \"lastName\": \"Renyard\",\n        \"email\": \"krenyard9@jimdo.com\"\n    }];\n\n    getUserEmailAddresses(): Observable<Array<string>> {\n        return of(this.data.map(d => d.email));\n    }\n\n    getUserByEmail(email?: string): Observable<User | undefined> {\n        return of(this.data.find(u => u.email === email));\n    }\n\n}\n\n@Component({\n    selector: 'app-badger-user-details',\n    template: `\n        <div *ngIf=\"userDetails$ | async as userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class BadgerUserDetailsComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails$ = onChanges(this, 'selectedEmail')\n        .pipe(\n            switchMap(() => this.inject(HttpUsersDataService).getUserByEmail(this.selectedEmail))\n        );\n}\n\n@Component({\n    selector: 'app-default-user-details',\n    template: `\n        <div *ngIf=\"userDetails\">\n            <strong>{{ userDetails.email }}</strong>\n            <div>{{ userDetails.firstName }} {{ userDetails.lastName }}</div>\n        </div>\n    `,\n    imports: [\n        NgIf,\n        AsyncPipe\n    ],\n    standalone: true\n})\nexport class DefaultUserDetailsComponent implements OnChanges {\n\n    @Input({required: true})\n    selectedEmail?: string;\n\n    userDetails: User | undefined;\n\n    private readonly httpUsersDataService = inject(HttpUsersDataService);\n    private readonly destroyRef = inject(DestroyRef);\n\n    ngOnChanges(changes: SimpleChanges) {\n        if (changes['selectedEmail']) {\n            this.httpUsersDataService.getUserByEmail(this.selectedEmail)\n                .pipe(\n                    takeUntilDestroyed(this.destroyRef)\n                )\n                .subscribe(userDetails => {\n                    this.userDetails = userDetails;\n                });\n        }\n    }\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        BadgerUserDetailsComponent,\n        DefaultUserDetailsComponent,\n        NgForOf,\n        GithubLinkComponent,\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/on-change.stories.ts\"/>\n        <div style=\"display: grid; grid-template-columns: 1fr 1fr;\">\n            <ul>\n                <li *ngFor=\"let email of userData$ | async\">\n                    <button (click)=\"selectedEmail = email\">\n                        {{ email }}\n                    </button>\n                </li>\n            </ul>\n            <div>\n                <strong>Badger</strong>\n                <app-badger-user-details [selectedEmail]=\"selectedEmail\"/>\n\n                <hr>\n                <strong>Default</strong>\n                <app-default-user-details [selectedEmail]=\"selectedEmail\"/>\n            </div>\n        </div>\n    `\n})\nexport class ExampleComponent {\n    userData$ = inject(HttpUsersDataService)\n        .getUserEmailAddresses();\n\n    selectedEmail = '';\n}\n\nexport default {\n    title: 'Reactivity/Examples/onChange real life example',\n    component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n    app-example {\n      display: block;\n    }\n  \n",
+            "stylesData": "",
             "isDuplicate": true,
-            "duplicateId": 2,
-            "duplicateName": "ExampleComponent-2"
+            "duplicateId": 1,
+            "duplicateName": "ExampleComponent-1"
         },
         {
             "name": "ExampleComponent",
-            "id": "component-ExampleComponent-ec69548832cb8a9445bdcbc1d9b323eccc1a0f2b4b8cc75c68d11b6369d37058f25712d7a0d9059e69b8c3aab551104b57188d14ce5109da21d3632e58483ae8-3",
-            "file": "src/stories/styles/examples/zoneless-host-listener.stories.ts",
+            "id": "component-ExampleComponent-8acb75a54f36964dc5c241fd0cf5dabdc767148f51ac2ffc257e482d31683eec430048d590e1916c9bde8c0083968e7bca5082bb6193a27f0affc37151ac5b60-2",
+            "file": "src/stories/reactivity/examples/zoneless-host-listener.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -315,13 +853,231 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {zonelessHostListener} from \"projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [\n    AsyncPipe,\n    GithubLinkComponent\n  ],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/zoneless-host-listener.stories.ts\"/>\n    <div\n      style=\"padding: 100px; border: 1px dashed black; display: flex; flex-direction: column; justify-content: center; align-items: center;\">\n      <p>\n        Open dev console and move mouse above this box to trigger events\n      </p>\n    </div>\n  `\n})\nexport class ExampleComponent {\n  event$ = merge(\n    zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n    zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n    zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n  )\n    .pipe(takeUntilDestroyed())\n    .subscribe(str => console.log(str));\n}\n\nexport default {\n  title: 'Reactivity/Examples/zonelessHostListener',\n  component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [\n    AsyncPipe,\n    GithubLinkComponent\n  ],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/zoneless-host-listener.stories.ts\"/>\n    <div\n      style=\"padding: 100px; border: 1px dashed black; display: flex; flex-direction: column; justify-content: center; align-items: center;\">\n      <p>\n        Open dev console and move mouse above this box to trigger events\n      </p>\n    </div>\n  `\n})\nexport class ExampleComponent {\n  event$ = merge(\n    zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n    zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n    zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n  )\n    .pipe(takeUntilDestroyed())\n    .subscribe(str => console.log(str));\n}\n\nexport default {\n  title: 'Reactivity/Examples/zonelessHostListener',\n  component: ExampleComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "isDuplicate": true,
+            "duplicateId": 2,
+            "duplicateName": "ExampleComponent-2"
+        },
+        {
+            "name": "ExampleComponent",
+            "id": "component-ExampleComponent-7c9706475d490caab9d949f61badc76e0bda8acda68250acb4f77e50ab7045a01da5019773549ae7754fed4c7e9668535495bfc299a78d4ab9ebb78b27e9a3de-3",
+            "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [
+                "\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    "
+            ],
+            "template": "<app-example-text/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "required": true,
+                    "name": "active",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "optional": false,
+                    "line": 30,
+                    "type": "boolean",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "changes$",
+                    "defaultValue": "onChanges(this, 'active')\n        .pipe(takeUntilDestroyed())\n        .subscribe(() => {\n            this.hostClasses.toggle('bg-red')\n        })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34
+                },
+                {
+                    "name": "hostClasses",
+                    "defaultValue": "hostClasses()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, Input, ViewEncapsulation} from \"@angular/core\";\nimport {AsyncPipe, CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {interval, map} from \"rxjs\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    `]\n})\nexport class ExampleComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    active: boolean = false;\n\n    hostClasses = hostClasses();\n\n    changes$ = onChanges(this, 'active')\n        .pipe(takeUntilDestroyed())\n        .subscribe(() => {\n            this.hostClasses.toggle('bg-red')\n        });\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent, AsyncPipe],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example [active]=\"!!(active$ | async)\" #example/>\n    `\n})\nexport class ExampleWrapperComponent extends ReactiveLifecycleDirective {\n    active$ = interval(1000)\n        .pipe(map(i => i % 2));\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses with onChanges',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    \n",
+            "extends": "ReactiveLifecycleDirective",
+            "isDuplicate": true,
             "duplicateId": 3,
             "duplicateName": "ExampleComponent-3"
+        },
+        {
+            "name": "ExampleComponent",
+            "id": "component-ExampleComponent-18b00d744a84ac21f885199fd6d83d75f077621f4c0487bcb4ad186acd622546c1595f776bff3d3c570f8d3613f313d0f4ddc9f5ed5f22618bff7c0a8f16d2d2-4",
+            "file": "src/stories/styles/examples/host-classes.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [
+                "\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    "
+            ],
+            "template": "<app-example-text/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "hostClasses",
+                    "defaultValue": "hostClasses()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostClasses = hostClasses();\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostClasses.set('bg-red')\">\n                <code>hostClasses.set('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.add('text-blue')\">\n                <code>hostClasses.add('text-blue')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.get())\">\n                <code>console.log(hostClasses.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n                <code>console.log(hostClasses.contains('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.remove('bg-red')\">\n                <code>hostClasses.remove('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.removeAll()\">\n                <code>hostClasses.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n                <code>console.log(hostClasses.swap('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.toggle('bg-red')\">\n                <code>hostClasses.toggle('bg-red')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.toString())\">\n                <code>console.log(hostClasses.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    \n",
+            "isDuplicate": true,
+            "duplicateId": 4,
+            "duplicateName": "ExampleComponent-4"
+        },
+        {
+            "name": "ExampleComponent",
+            "id": "component-ExampleComponent-4557d2dad7a6d6d440497a36b76593da930009c559bbf37c6876c496d5eab60a9acce01ba1760b31ea5ef068484fd045c1475c246d43441fdabd8d84cbc695ba-5",
+            "file": "src/stories/styles/examples/host-styles.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [
+                "\n        app-example {\n            display: block;\n        }\n    "
+            ],
+            "template": "<app-example-text/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "hostStyles",
+                    "defaultValue": "hostStyles({})",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostStyles = hostStyles({});\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n                <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n            </button>\n            <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n                <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.get())\">\n                <code>console.log(hostStyles.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n                <code>console.log(hostStyles.contains('background'))</code>\n            </button>\n            <button (click)=\"example.hostStyles.remove('background')\">\n                <code>hostStyles.remove('background')</code>\n            </button>\n            <button (click)=\"example.hostStyles.removeAll()\">\n                <code>hostStyles.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n                <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.toString())\">\n                <code>console.log(hostStyles.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostStyles',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n        app-example {\n            display: block;\n        }\n    \n",
+            "isDuplicate": true,
+            "duplicateId": 5,
+            "duplicateName": "ExampleComponent-5"
         },
         {
             "name": "ExampleTextComponent",
@@ -364,7 +1120,70 @@
         },
         {
             "name": "ExampleWrapperComponent",
-            "id": "component-ExampleWrapperComponent-a556d0ceaeb2d53092a6b08a67b787013563d7801416dd83080adace26456f0c809520e74be2ff11c2509a77f92153edbc6f34f82e5dcb666c6a44efa84bb0db",
+            "id": "component-ExampleWrapperComponent-7c9706475d490caab9d949f61badc76e0bda8acda68250acb4f77e50ab7045a01da5019773549ae7754fed4c7e9668535495bfc299a78d4ab9ebb78b27e9a3de",
+            "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example-wrapper",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n<app-example [active]=\"!!(active$ | async)\" #example/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "active$",
+                    "defaultValue": "interval(1000)\n        .pipe(map(i => i % 2))",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 51
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "ExampleComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ButtonGroupComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "AsyncPipe",
+                    "type": "pipe"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, Input, ViewEncapsulation} from \"@angular/core\";\nimport {AsyncPipe, CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {onChanges, ReactiveLifecycleDirective} from \"ng-badger\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {interval, map} from \"rxjs\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        .bg-red {\n            display: block;\n            background: red;\n        }\n    `]\n})\nexport class ExampleComponent extends ReactiveLifecycleDirective {\n\n    @Input({required: true})\n    active: boolean = false;\n\n    hostClasses = hostClasses();\n\n    changes$ = onChanges(this, 'active')\n        .pipe(takeUntilDestroyed())\n        .subscribe(() => {\n            this.hostClasses.toggle('bg-red')\n        });\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent, AsyncPipe],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example [active]=\"!!(active$ | async)\" #example/>\n    `\n})\nexport class ExampleWrapperComponent extends ReactiveLifecycleDirective {\n    active$ = interval(1000)\n        .pipe(map(i => i % 2));\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses with onChanges',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": "ReactiveLifecycleDirective"
+        },
+        {
+            "name": "ExampleWrapperComponent",
+            "id": "component-ExampleWrapperComponent-18b00d744a84ac21f885199fd6d83d75f077621f4c0487bcb4ad186acd622546c1595f776bff3d3c570f8d3613f313d0f4ddc9f5ed5f22618bff7c0a8f16d2d2-1",
             "file": "src/stories/styles/examples/host-classes.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -374,7 +1193,7 @@
             "selector": "app-example-wrapper",
             "styleUrls": [],
             "styles": [],
-            "template": "<app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n<app-example #example/>\n<app-button-group>\n  <button (click)=\"example.hostClasses.set('bg-red')\">\n    <code>hostClasses.set('bg-red')</code>\n  </button>\n  <button (click)=\"example.hostClasses.add('text-blue')\">\n    <code>hostClasses.add('text-blue')</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.get())\">\n    <code>console.log(hostClasses.get())</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n    <code>console.log(hostClasses.contains('bg-red'))</code>\n  </button>\n  <button (click)=\"example.hostClasses.remove('bg-red')\">\n    <code>hostClasses.remove('bg-red')</code>\n  </button>\n  <button (click)=\"example.hostClasses.removeAll()\">\n    <code>hostClasses.removeAll()</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n    <code>console.log(hostClasses.swap('bg-red'))</code>\n  </button>\n  <button (click)=\"example.hostClasses.toggle('bg-red')\">\n    <code>hostClasses.toggle('bg-red')</code>\n  </button>\n  <button (click)=\"console.log(example.hostClasses.toString())\">\n    <code>console.log(hostClasses.toString())</code>\n  </button>\n</app-button-group>\n",
+            "template": "<app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n<app-example #example/>\n<app-button-group>\n    <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>hostClasses.set('bg-red')</code>\n    </button>\n    <button (click)=\"example.hostClasses.add('text-blue')\">\n        <code>hostClasses.add('text-blue')</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.get())\">\n        <code>console.log(hostClasses.get())</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n        <code>console.log(hostClasses.contains('bg-red'))</code>\n    </button>\n    <button (click)=\"example.hostClasses.remove('bg-red')\">\n        <code>hostClasses.remove('bg-red')</code>\n    </button>\n    <button (click)=\"example.hostClasses.removeAll()\">\n        <code>hostClasses.removeAll()</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n        <code>console.log(hostClasses.swap('bg-red'))</code>\n    </button>\n    <button (click)=\"example.hostClasses.toggle('bg-red')\">\n        <code>hostClasses.toggle('bg-red')</code>\n    </button>\n    <button (click)=\"console.log(example.hostClasses.toString())\">\n        <code>console.log(hostClasses.toString())</code>\n    </button>\n</app-button-group>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -389,7 +1208,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 66
+                    "line": 74
                 }
             ],
             "methodsClass": [],
@@ -415,14 +1234,17 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport { hostClasses } from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example { display: block; }\n    .bg-red { background: red; }\n    .text-blue { color: blue; }\n  `]\n})\nexport class ExampleComponent {\n  hostClasses = hostClasses();\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostClasses.set('bg-red')\">\n        <code>hostClasses.set('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.add('text-blue')\">\n        <code>hostClasses.add('text-blue')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.get())\">\n        <code>console.log(hostClasses.get())</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n        <code>console.log(hostClasses.contains('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.remove('bg-red')\">\n        <code>hostClasses.remove('bg-red')</code>\n      </button>\n      <button (click)=\"example.hostClasses.removeAll()\">\n        <code>hostClasses.removeAll()</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n        <code>console.log(hostClasses.swap('bg-red'))</code>\n      </button>\n      <button (click)=\"example.hostClasses.toggle('bg-red')\">\n        <code>hostClasses.toggle('bg-red')</code>\n      </button>\n      <button (click)=\"console.log(example.hostClasses.toString())\">\n        <code>console.log(hostClasses.toString())</code>\n      </button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostClasses',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostClasses} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n\n        .bg-red {\n            background: red;\n        }\n\n        .text-blue {\n            color: blue;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostClasses = hostClasses();\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-classes.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostClasses.set('bg-red')\">\n                <code>hostClasses.set('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.add('text-blue')\">\n                <code>hostClasses.add('text-blue')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.get())\">\n                <code>console.log(hostClasses.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.contains('bg-red'))\">\n                <code>console.log(hostClasses.contains('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.remove('bg-red')\">\n                <code>hostClasses.remove('bg-red')</code>\n            </button>\n            <button (click)=\"example.hostClasses.removeAll()\">\n                <code>hostClasses.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.swap('bg-red'))\">\n                <code>console.log(hostClasses.swap('bg-red'))</code>\n            </button>\n            <button (click)=\"example.hostClasses.toggle('bg-red')\">\n                <code>hostClasses.toggle('bg-red')</code>\n            </button>\n            <button (click)=\"console.log(example.hostClasses.toString())\">\n                <code>console.log(hostClasses.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostClasses',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": ""
+            "stylesData": "",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "ExampleWrapperComponent-1"
         },
         {
             "name": "ExampleWrapperComponent",
-            "id": "component-ExampleWrapperComponent-5ccbd7d2164f488a6cadc0d755d896df00bbc15be48af8678fa5e892a241d7ec58f29917c6025e936f98983b39486f0459ac604c3a9623f2055becdf55604184-1",
+            "id": "component-ExampleWrapperComponent-4557d2dad7a6d6d440497a36b76593da930009c559bbf37c6876c496d5eab60a9acce01ba1760b31ea5ef068484fd045c1475c246d43441fdabd8d84cbc695ba-2",
             "file": "src/stories/styles/examples/host-styles.stories.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -432,7 +1254,7 @@
             "selector": "app-example-wrapper",
             "styleUrls": [],
             "styles": [],
-            "template": "<app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n<app-example #example/>\n<app-button-group>\n  <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n    <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n  </button>\n  <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n    <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n  </button>\n  <button (click)=\"console.log(example.hostStyles.get())\">\n    <code>console.log(hostStyles.get())</code>\n  </button>\n  <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n    <code>console.log(hostStyles.contains('background'))</code>\n  </button>\n  <button (click)=\"example.hostStyles.remove('background')\">\n    <code>hostStyles.remove('background')</code>\n  </button>\n  <button (click)=\"example.hostStyles.removeAll()\">\n    <code>hostStyles.removeAll()</code>\n  </button>\n  <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n    <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n  </button>\n  <button (click)=\"console.log(example.hostStyles.toString())\">\n    <code>console.log(hostStyles.toString())</code>\n  </button>\n</app-button-group>\n",
+            "template": "<app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n<app-example #example/>\n<app-button-group>\n    <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n        <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n    </button>\n    <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n        <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n    </button>\n    <button (click)=\"console.log(example.hostStyles.get())\">\n        <code>console.log(hostStyles.get())</code>\n    </button>\n    <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n        <code>console.log(hostStyles.contains('background'))</code>\n    </button>\n    <button (click)=\"example.hostStyles.remove('background')\">\n        <code>hostStyles.remove('background')</code>\n    </button>\n    <button (click)=\"example.hostStyles.removeAll()\">\n        <code>hostStyles.removeAll()</code>\n    </button>\n    <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n        <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n    </button>\n    <button (click)=\"console.log(example.hostStyles.toString())\">\n        <code>console.log(hostStyles.toString())</code>\n    </button>\n</app-button-group>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -473,17 +1295,17 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n  selector: 'app-example',\n  standalone: true,\n  imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n  template: `\n    <app-example-text/>\n  `,\n  encapsulation: ViewEncapsulation.None,\n  styles: [`\n    app-example {\n      display: block;\n    }\n  `]\n})\nexport class ExampleComponent {\n  hostStyles = hostStyles({});\n}\n\n@Component({\n  selector: 'app-example-wrapper',\n  standalone: true,\n  imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n  template: `\n    <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n    <app-example #example/>\n    <app-button-group>\n      <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n        <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n      </button>\n      <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n        <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.get())\">\n        <code>console.log(hostStyles.get())</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n        <code>console.log(hostStyles.contains('background'))</code>\n      </button>\n      <button (click)=\"example.hostStyles.remove('background')\">\n        <code>hostStyles.remove('background')</code>\n      </button>\n      <button (click)=\"example.hostStyles.removeAll()\">\n        <code>hostStyles.removeAll()</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n        <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n      </button>\n      <button (click)=\"console.log(example.hostStyles.toString())\">\n        <code>console.log(hostStyles.toString())</code>\n      </button>\n    </app-button-group>\n  `\n})\nexport class ExampleWrapperComponent {\n  console = console;\n}\n\nexport default {\n  title: 'Styles/Examples/hostStyles',\n  component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {CommonModule} from \"@angular/common\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {hostStyles} from \"projects/ng-badger/src/public-api\";\nimport {ButtonGroupComponent} from \"../../../app/button-group/button-group.component\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    standalone: true,\n    imports: [CommonModule, ExampleTextComponent, ButtonGroupComponent],\n    template: `\n        <app-example-text/>\n    `,\n    encapsulation: ViewEncapsulation.None,\n    styles: [`\n        app-example {\n            display: block;\n        }\n    `]\n})\nexport class ExampleComponent {\n    hostStyles = hostStyles({});\n}\n\n@Component({\n    selector: 'app-example-wrapper',\n    standalone: true,\n    imports: [ExampleComponent, ButtonGroupComponent, GithubLinkComponent],\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/host-styles.stories.ts\"/>\n        <app-example #example/>\n        <app-button-group>\n            <button (click)=\"example.hostStyles.set({ background: 'red' })\">\n                <code>hostStyles.set({{ \"{\" }} background: 'red' })</code>\n            </button>\n            <button (click)=\"example.hostStyles.add({color: 'blue'})\">\n                <code>hostStyles.add({{ \"{\" }} color: 'blue'})</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.get())\">\n                <code>console.log(hostStyles.get())</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.contains('background'))\">\n                <code>console.log(hostStyles.contains('background'))</code>\n            </button>\n            <button (click)=\"example.hostStyles.remove('background')\">\n                <code>hostStyles.remove('background')</code>\n            </button>\n            <button (click)=\"example.hostStyles.removeAll()\">\n                <code>hostStyles.removeAll()</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.swap({ background: 'red' }))\">\n                <code>console.log(hostStyles.swap({{ \"{\" }} background: 'red' }))</code>\n            </button>\n            <button (click)=\"console.log(example.hostStyles.toString())\">\n                <code>console.log(hostStyles.toString())</code>\n            </button>\n        </app-button-group>\n    `\n})\nexport class ExampleWrapperComponent {\n    console = console;\n}\n\nexport default {\n    title: 'Styles/Examples/hostStyles',\n    component: ExampleWrapperComponent\n} as Meta<ExampleComponent>;\n\n\nexport const Example: StoryObj<ExampleWrapperComponent> = {};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "ExampleWrapperComponent-1"
+            "duplicateId": 2,
+            "duplicateName": "ExampleWrapperComponent-2"
         },
         {
             "name": "GithubLinkComponent",
-            "id": "component-GithubLinkComponent-a4cfdc4b0e1a7073c68f10c2d780a019968099b258461f80a7d2bbc9223e45e157c02a40032606cdf51b154b624f72b6dd97ff347310474a821c6faa8936f90a",
+            "id": "component-GithubLinkComponent-b1e3c485d797ee1706360fc8835b26daae7c15c3738ba3a904d2759cacb9d951585c9f52a7e6d012814dc11761937a50463853d090059da1b2bb6e85acf6cbd9",
             "file": "src/app/github-link/github-link.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -493,9 +1315,9 @@
             "selector": "app-github-link",
             "styleUrls": [],
             "styles": [
-                "\n    .github-link {\n      border: 1px solid #ddd;\n      box-shadow: 0 0 5px 0 #ddd;\n      font-size: 1em;\n      line-height: 1em;\n      display: inline-flex;\n      gap: 10px;\n      padding: 10px 15px;\n      border-radius: 6px;\n      text-decoration: none;\n      color: black;\n      margin-bottom: 25px;\n      transition: all .2s;\n    }\n\n    .github-link:hover {\n      color: indigo;\n    }\n  "
+                "\n      .github-link {\n          border: 1px solid rgba(31, 35, 40, 0.15);\n          background: rgb(246, 248, 250);\n          box-shadow: rgba(31, 35, 40, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;;\n          font-size: 1em;\n          line-height: 1em;\n          display: inline-flex;\n          gap: 10px;\n          padding: 10px 15px;\n          border-radius: 6px;\n          text-decoration: none;\n          color: black;\n          margin-bottom: 25px;\n          transition: all .2s;\n      }\n\n      .github-link:hover {\n          color: indigo;\n      }\n  "
             ],
-            "template": "<a [href]=\"base + src\" class=\"github-link\" target=\"_blank\">\n  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 496 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z\"/></svg>\n  view in GitHub\n</a>\n",
+            "template": "<a [href]=\"base + src\" class=\"github-link\" target=\"_blank\">\n  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 496 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z\"/></svg>\n  view story code on GitHub\n</a>\n",
             "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
@@ -507,7 +1329,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "optional": false,
-                    "line": 38,
+                    "line": 39,
                     "type": "string",
                     "decorators": []
                 }
@@ -522,7 +1344,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 40
+                    "line": 41
                 }
             ],
             "methodsClass": [],
@@ -540,10 +1362,10 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@Component({\n  selector: 'app-github-link',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <a [href]=\"base + src\" class=\"github-link\" target=\"_blank\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 496 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z\"/></svg>\n      view in GitHub\n    </a>\n  `,\n  styles: [`\n    .github-link {\n      border: 1px solid #ddd;\n      box-shadow: 0 0 5px 0 #ddd;\n      font-size: 1em;\n      line-height: 1em;\n      display: inline-flex;\n      gap: 10px;\n      padding: 10px 15px;\n      border-radius: 6px;\n      text-decoration: none;\n      color: black;\n      margin-bottom: 25px;\n      transition: all .2s;\n    }\n\n    .github-link:hover {\n      color: indigo;\n    }\n  `]\n})\nexport class GithubLinkComponent {\n\n  @Input({ required: true })\n  src = '';\n\n  base = 'https://github.com/galczo5/ng-badger/tree/main';\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@Component({\n  selector: 'app-github-link',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <a [href]=\"base + src\" class=\"github-link\" target=\"_blank\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 496 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z\"/></svg>\n      view story code on GitHub\n    </a>\n  `,\n  styles: [`\n      .github-link {\n          border: 1px solid rgba(31, 35, 40, 0.15);\n          background: rgb(246, 248, 250);\n          box-shadow: rgba(31, 35, 40, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;;\n          font-size: 1em;\n          line-height: 1em;\n          display: inline-flex;\n          gap: 10px;\n          padding: 10px 15px;\n          border-radius: 6px;\n          text-decoration: none;\n          color: black;\n          margin-bottom: 25px;\n          transition: all .2s;\n      }\n\n      .github-link:hover {\n          color: indigo;\n      }\n  `]\n})\nexport class GithubLinkComponent {\n\n  @Input({ required: true })\n  src = '';\n\n  base = 'https://github.com/galczo5/ng-badger/tree/main';\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
-            "stylesData": "\n    .github-link {\n      border: 1px solid #ddd;\n      box-shadow: 0 0 5px 0 #ddd;\n      font-size: 1em;\n      line-height: 1em;\n      display: inline-flex;\n      gap: 10px;\n      padding: 10px 15px;\n      border-radius: 6px;\n      text-decoration: none;\n      color: black;\n      margin-bottom: 25px;\n      transition: all .2s;\n    }\n\n    .github-link:hover {\n      color: indigo;\n    }\n  \n"
+            "stylesData": "\n      .github-link {\n          border: 1px solid rgba(31, 35, 40, 0.15);\n          background: rgb(246, 248, 250);\n          box-shadow: rgba(31, 35, 40, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;;\n          font-size: 1em;\n          line-height: 1em;\n          display: inline-flex;\n          gap: 10px;\n          padding: 10px 15px;\n          border-radius: 6px;\n          text-decoration: none;\n          color: black;\n          margin-bottom: 25px;\n          transition: all .2s;\n      }\n\n      .github-link:hover {\n          color: indigo;\n      }\n  \n"
         },
         {
             "name": "MethodComponent",
@@ -595,6 +1417,278 @@
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n    :host {\n      display: flex;\n      gap: 1rem;\n      padding: 1rem;\n      border: 1px solid #d1d5db;\n      border-radius: 4px;\n      margin-bottom: 1rem;\n      background: #f3f4f6;\n      color: black;\n      width: 100%;\n    }\n  \n"
+        },
+        {
+            "name": "WrapperComponent",
+            "id": "component-WrapperComponent-1f81649912a79a793c9ab3a619305e608a4781e483185e7a02f13a8787fda5f7166a282529e72895fbff6983cba5d63969418cc43c95ce5f9f79c5663899fed4",
+            "file": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-wrapper",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<app-github-link src=\"/src/stories/reactivity/examples/host-listener-compare.stories.ts\"/>\n<app-badger-example/>\n<div style=\"margin-bottom: 25px;\"></div>\n<app-default-example/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "BadgerExampleComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "DefaultExampleComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport {Component, HostListener} from \"@angular/core\";\nimport {AsyncPipe} from \"@angular/common\";\nimport {hostListener} from \"../../../../projects/ng-badger/src/public-api\";\nimport {map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        GithubLinkComponent\n    ],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>@HostListener() example</strong>\n                Move mouse above or click this box to trigger events\n            </p>\n            <strong>{{ event }}</strong>\n        </div>\n    `\n})\nexport class DefaultExampleComponent {\n    event?: string;\n\n    @HostListener('click')\n    onClick() {\n        this.event = 'Mouse Click';\n    }\n\n    @HostListener('mouseenter')\n    onEnter() {\n        this.event = 'Mouse Enter';\n    }\n\n    @HostListener('mouseleave')\n    onLeave() {\n        this.event = 'Mouse Leave';\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [\n        AsyncPipe,\n        GithubLinkComponent\n    ],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>hostListener() example</strong>\n                Move mouse above or click this box to trigger events\n            </p>\n            <strong>{{ event$ | async }}</strong>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        hostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        hostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        hostListener('click').pipe(map(() => 'Mouse Click'))\n    );\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {}\n\nexport default {\n    title: 'Reactivity/Examples/hostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": ""
+        },
+        {
+            "name": "WrapperComponent",
+            "id": "component-WrapperComponent-86168dfe3f963d2da8d20a436fd63c92da0db463aad1fccf18d4a0d1f4da149720080bb176502769114d07483dda00e80ed0b5ec7711f63d86e007892de6e17a-1",
+            "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-wrapper",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n<app-badger-example/>\n<div style=\"margin-bottom: 25px;\"></div>\n<app-default-example/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "BadgerExampleComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "DefaultExampleComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type { OnInit} from \"@angular/core\";\nimport {Component, DestroyRef, ElementRef, inject, NgZone} from \"@angular/core\";\nimport {fromEvent, map, merge} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\nimport {takeUntilDestroyed} from \"@angular/core/rxjs-interop\";\nimport {zonelessHostListener} from \"../../../../projects/ng-badger/src/lib/functions/listener\";\n\n@Component({\n    selector: 'app-default-example',\n    standalone: true,\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>fromEvent and runOutsideAngular</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class DefaultExampleComponent implements OnInit {\n    private readonly ngZone = inject(NgZone);\n    private readonly destroyRef = inject(DestroyRef);\n    private readonly elementRef = inject(ElementRef);\n\n    ngOnInit() {\n        this.ngZone.runOutsideAngular(() => {\n            merge(\n                fromEvent(this.elementRef.nativeElement, 'mouseenter').pipe(map(() => 'Mouse Enter')),\n                fromEvent(this.elementRef.nativeElement, 'mouseleave').pipe(map(() => 'Mouse Leave')),\n                fromEvent(this.elementRef.nativeElement, 'click').pipe(map(() => 'Mouse Click'))\n            )\n                .pipe(takeUntilDestroyed(this.destroyRef))\n                .subscribe(event =>\n                    console.log(event)\n                );\n        });\n    }\n}\n\n@Component({\n    selector: 'app-badger-example',\n    standalone: true,\n    imports: [],\n    template: `\n        <div style=\"padding: 100px; border: 1px dashed black;\">\n            <p>\n                <strong>zonelessHostListener</strong>\n                Open dev tools.\n                Move mouse above or click this box to trigger events\n            </p>\n        </div>\n    `\n})\nexport class BadgerExampleComponent {\n    event$ = merge(\n        zonelessHostListener('mouseenter').pipe(map(() => 'Mouse Enter')),\n        zonelessHostListener('mouseleave').pipe(map(() => 'Mouse Leave')),\n        zonelessHostListener('click').pipe(map(() => 'Mouse Click'))\n    )\n        .pipe(takeUntilDestroyed())\n        .subscribe(event => console.log(event));\n}\n\n@Component({\n    selector: 'app-wrapper',\n    standalone: true,\n    imports: [\n        BadgerExampleComponent,\n        DefaultExampleComponent,\n        GithubLinkComponent\n    ],\n    template: `\n        <app-github-link src=\"/src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts\"/>\n        <app-badger-example/>\n        <div style=\"margin-bottom: 25px;\"></div>\n        <app-default-example/>\n    `\n})\nexport class WrapperComponent {\n}\n\nexport default {\n    title: 'Reactivity/Examples/zonelessHostListener vs HostListener',\n    component: WrapperComponent\n} as Meta<WrapperComponent>;\n\n\nexport const Example: StoryObj<WrapperComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "WrapperComponent-1"
+        },
+        {
+            "name": "ZonelessExampleComponent",
+            "id": "component-ZonelessExampleComponent-cafa239cb0fc7c1ed7e0f72610cd4ccbc6b4f24235bcc3e96a944257cb9cb758389e1380526236affc2db8bf198f7255232b2e22f88ac4a3324a935a9f2afed3",
+            "file": "src/stories/styles/examples/reactive-class.directive.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [
+                "\n        .red {\n            display: block;\n            background: red;\n        }\n\n        .blue {\n            display: block;\n            background: blue;\n        }\n    "
+            ],
+            "template": "<app-github-link src=\"/src/stories/styles/examples/reactive-class.directive.stories.ts\"/>\n<app-example-text [reactiveClass]=\"classes$\"/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "classes$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<string>",
+                    "optional": false,
+                    "description": "",
+                    "line": 36
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ReactiveClassDirective",
+                    "type": "directive"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type {NgZone} from \"@angular/core\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {ReactiveClassDirective} from \"../../../../projects/ng-badger/src/lib/directives\";\nimport type {Observable} from \"rxjs\";\nimport {interval, map} from \"rxjs\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/reactive-class.directive.stories.ts\"/>\n        <app-example-text [reactiveClass]=\"classes$\"/>\n    `,\n    imports: [\n        ExampleTextComponent,\n        ReactiveClassDirective,\n        GithubLinkComponent\n    ],\n    encapsulation: ViewEncapsulation.None,\n    standalone: true,\n    styles: [`\n        .red {\n            display: block;\n            background: red;\n        }\n\n        .blue {\n            display: block;\n            background: blue;\n        }\n    `]\n})\nexport class ZonelessExampleComponent {\n    classes$!: Observable<string>;\n\n    constructor(ngZone: NgZone) {\n        ngZone.runOutsideAngular(() => {\n            this.classes$ = interval(1000)\n                .pipe(map(i => i % 2 ? 'red' : 'blue'))\n        });\n    }\n}\n\nexport default {\n    title: 'Styles/Examples/ReactiveClassDirective',\n    component: ZonelessExampleComponent\n} as Meta<ZonelessExampleComponent>;\n\n\nexport const Example: StoryObj<ZonelessExampleComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n        .red {\n            display: block;\n            background: red;\n        }\n\n        .blue {\n            display: block;\n            background: blue;\n        }\n    \n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "ngZone",
+                        "type": "NgZone",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 36,
+                "jsdoctags": [
+                    {
+                        "name": "ngZone",
+                        "type": "NgZone",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "ZonelessExampleComponent",
+            "id": "component-ZonelessExampleComponent-2f869573e1eebf187efab3135c627bf5b4d77cf3ffa05715049c2b93ab0a67cc7ae98a5c0ee615bf00c2236db753ca39a139a7b3c793779c88ed8376e5da1b32-1",
+            "file": "src/stories/styles/examples/reactive-style.directive.stories.ts",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-example",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<app-github-link src=\"/src/stories/styles/examples/reactive-style.directive.stories.ts\"/>\n<app-example-text [reactiveStyle]=\"classes$\"/>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "classes$",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<StylesProperty>",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "ExampleTextComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "ReactiveStyleDirective",
+                    "type": "directive"
+                },
+                {
+                    "name": "GithubLinkComponent",
+                    "type": "component"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type {Meta, StoryObj} from \"@storybook/angular\";\nimport type {NgZone} from \"@angular/core\";\nimport {Component, ViewEncapsulation} from \"@angular/core\";\nimport {ExampleTextComponent} from \"../../../app/example-text/example-text/example-text.component\";\nimport {ReactiveStyleDirective} from \"../../../../projects/ng-badger/src/lib/directives\";\nimport type {Observable} from \"rxjs\";\nimport {interval, map} from \"rxjs\";\nimport type {StylesProperty} from \"../../../../projects/ng-badger/src/lib/types\";\nimport {GithubLinkComponent} from \"../../../app/github-link/github-link.component\";\n\n@Component({\n    selector: 'app-example',\n    template: `\n        <app-github-link src=\"/src/stories/styles/examples/reactive-style.directive.stories.ts\"/>\n        <app-example-text [reactiveStyle]=\"classes$\"/>\n    `,\n    imports: [\n        ExampleTextComponent,\n        ReactiveStyleDirective,\n        GithubLinkComponent\n    ],\n    encapsulation: ViewEncapsulation.None,\n    standalone: true\n})\nexport class ZonelessExampleComponent {\n    classes$!: Observable<StylesProperty>;\n\n    constructor(ngZone: NgZone) {\n        ngZone.runOutsideAngular(() => {\n            this.classes$ = interval(1000)\n                .pipe(\n                    map(i => i % 2 ? {color: 'red'} : {color: 'blue'})\n                )\n        });\n    }\n}\n\nexport default {\n    title: 'Styles/Examples/ReactiveStyleDirective',\n    component: ZonelessExampleComponent\n} as Meta<ZonelessExampleComponent>;\n\n\nexport const Example: StoryObj<ZonelessExampleComponent> = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "ngZone",
+                        "type": "NgZone",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 26,
+                "jsdoctags": [
+                    {
+                        "name": "ngZone",
+                        "type": "NgZone",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "ZonelessExampleComponent-1"
         }
     ],
     "modules": [
@@ -649,7 +1743,57 @@
                 "name": "Example",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/styles/examples/host-classes.stories.ts",
+                "file": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<WrapperComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/reactivity/examples/host-listener.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<ExampleComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/reactivity/examples/on-change.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<ExampleComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<WrapperComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/reactivity/examples/zoneless-host-listener.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<ExampleComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StoryObj<ExampleWrapperComponent>",
@@ -659,10 +1803,10 @@
                 "name": "Example",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/styles/examples/host-listener.stories.ts",
+                "file": "src/stories/styles/examples/host-classes.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "StoryObj<ExampleComponent>",
+                "type": "StoryObj<ExampleWrapperComponent>",
                 "defaultValue": "{}"
             },
             {
@@ -679,10 +1823,20 @@
                 "name": "Example",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/styles/examples/zoneless-host-listener.stories.ts",
+                "file": "src/stories/styles/examples/reactive-class.directive.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "StoryObj<ExampleComponent>",
+                "type": "StoryObj<ZonelessExampleComponent>",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Example",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/styles/examples/reactive-style.directive.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<ZonelessExampleComponent>",
                 "defaultValue": "{}"
             },
             {
@@ -697,9 +1851,93 @@
             }
         ],
         "functions": [],
-        "typealiases": [],
+        "typealiases": [
+            {
+                "name": "User",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "literal type",
+                "file": "src/stories/reactivity/examples/on-change.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            }
+        ],
         "enumerations": [],
         "groupedVariables": {
+            "src/stories/reactivity/examples/host-listener-compare.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<WrapperComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/reactivity/examples/host-listener.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/reactivity/examples/host-listener.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<ExampleComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/reactivity/examples/on-change.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/reactivity/examples/on-change.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<ExampleComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<WrapperComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/reactivity/examples/zoneless-host-listener.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/reactivity/examples/zoneless-host-listener.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<ExampleComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/styles/examples/host-classes-real-life.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<ExampleWrapperComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
             "src/stories/styles/examples/host-classes.stories.ts": [
                 {
                     "name": "Example",
@@ -709,18 +1947,6 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "StoryObj<ExampleWrapperComponent>",
-                    "defaultValue": "{}"
-                }
-            ],
-            "src/stories/styles/examples/host-listener.stories.ts": [
-                {
-                    "name": "Example",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/styles/examples/host-listener.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "StoryObj<ExampleComponent>",
                     "defaultValue": "{}"
                 }
             ],
@@ -736,15 +1962,27 @@
                     "defaultValue": "{}"
                 }
             ],
-            "src/stories/styles/examples/zoneless-host-listener.stories.ts": [
+            "src/stories/styles/examples/reactive-class.directive.stories.ts": [
                 {
                     "name": "Example",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/styles/examples/zoneless-host-listener.stories.ts",
+                    "file": "src/stories/styles/examples/reactive-class.directive.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "StoryObj<ExampleComponent>",
+                    "type": "StoryObj<ZonelessExampleComponent>",
+                    "defaultValue": "{}"
+                }
+            ],
+            "src/stories/styles/examples/reactive-style.directive.stories.ts": [
+                {
+                    "name": "Example",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/styles/examples/reactive-style.directive.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<ZonelessExampleComponent>",
                     "defaultValue": "{}"
                 }
             ],
@@ -763,7 +2001,21 @@
         },
         "groupedFunctions": {},
         "groupedEnumerations": {},
-        "groupedTypeAliases": {}
+        "groupedTypeAliases": {
+            "src/stories/reactivity/examples/on-change.stories.ts": [
+                {
+                    "name": "User",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "literal type",
+                    "file": "src/stories/reactivity/examples/on-change.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ]
+        }
     },
     "routes": [],
     "coverage": {
@@ -826,6 +2078,192 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BadgerExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DefaultExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "WrapperComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/host-listener-compare.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/host-listener.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/host-listener.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/on-change.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BadgerUserDetailsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/on-change.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DefaultUserDetailsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/on-change.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/on-change.stories.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "HttpUsersDataService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/on-change.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BadgerExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DefaultExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "WrapperComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/zoneless-host-listener-compare.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/zoneless-host-listener.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/reactivity/examples/zoneless-host-listener.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ExampleWrapperComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/host-classes-real-life.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/styles/examples/host-classes.stories.ts",
                 "type": "component",
                 "linktype": "component",
@@ -854,25 +2292,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/styles/examples/host-listener.stories.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ExampleComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/styles/examples/host-listener.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Example",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "src/stories/styles/examples/host-styles.stories.ts",
                 "type": "component",
                 "linktype": "component",
@@ -901,16 +2320,35 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/styles/examples/zoneless-host-listener.stories.ts",
+                "filePath": "src/stories/styles/examples/reactive-class.directive.stories.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "ExampleComponent",
+                "name": "ZonelessExampleComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
-                "filePath": "src/stories/styles/examples/zoneless-host-listener.stories.ts",
+                "filePath": "src/stories/styles/examples/reactive-class.directive.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Example",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/reactive-style.directive.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ZonelessExampleComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/styles/examples/reactive-style.directive.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

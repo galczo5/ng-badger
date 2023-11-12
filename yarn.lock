@@ -9487,6 +9487,13 @@ next-tick@^1.1.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
   integrity sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
 
+ng-badger@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/ng-badger/-/ng-badger-0.0.2.tgz#d12fbc4e056cbfca943799cf5a1b9ed80ff76adf"
+  integrity sha512-uz8KduMwagBDluq0hJYme44x6UHkoNMYq4g/ZBt78NYtXfDmCJoytGERqw6C2/2e4u0ylnA2FGM4U7gcrI4jtQ==
+  dependencies:
+    tslib "^2.3.0"
+
 ng-packagr@^16.2.0:
   version "16.2.3"
   resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-16.2.3.tgz#d516774ccee80147e9caa85395a7bf93d8d044f1"
